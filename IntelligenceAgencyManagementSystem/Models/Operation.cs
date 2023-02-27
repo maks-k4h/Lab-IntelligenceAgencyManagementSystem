@@ -21,10 +21,10 @@ public partial class Operation
     public int DepartmentId { get; set; }
 
     [Display(Name = "Дата початку")]
-    public DateTime? DateStarted { get; set; }
+    public DateOnly? DateStarted { get; set; }
 
     [Display(Name = "Дата завершення")]
-    public DateTime? DateEnded { get; set; }
+    public DateOnly? DateEnded { get; set; }
 
     public virtual ICollection<AgentsToOp> AgentsToOps { get; } = new List<AgentsToOp>();
 

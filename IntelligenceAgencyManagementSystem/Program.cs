@@ -7,8 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Configure database connection
-builder.Services.AddDbContext<IaDbContext>(option => option.UseMySQL(
-    builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty
+builder.Services.AddDbContext<IaDbContext>(option => option.UseMySql(
+    builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty,
+    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty)
 ));
 
 var app = builder.Build();

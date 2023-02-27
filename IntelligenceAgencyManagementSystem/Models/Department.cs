@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Google.Protobuf.WellKnownTypes;
 
 namespace IntelligenceAgencyManagementSystem;
 
@@ -19,10 +18,10 @@ public partial class Department
 
     [Display(Name = "Дата створення")]
     [Required(ErrorMessage = "Необхідно вказати дату створення департаменту")]
-    public DateTime DateCreated { get; set; }
+    public DateOnly DateCreated { get; set; }
 
     [Display(Name = "Дата закриття")]
-    public DateTime? DateClosed { get; set; }
+    public DateOnly? DateClosed { get; set; }
 
     public virtual ICollection<Operation> Operations { get; } = new List<Operation>();
 
