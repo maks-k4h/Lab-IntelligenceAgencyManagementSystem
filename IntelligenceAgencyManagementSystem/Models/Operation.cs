@@ -19,7 +19,7 @@ public partial class Operation
 
     public virtual ICollection<AgentsToOp> AgentsToOps { get; } = new List<AgentsToOp>();
 
-    public virtual Department Department { get; set; } = null!;
+    public virtual Department? Department { get; set; } = null;
 
     public virtual ICollection<Task> Tasks { get; } = new List<Task>();
 }

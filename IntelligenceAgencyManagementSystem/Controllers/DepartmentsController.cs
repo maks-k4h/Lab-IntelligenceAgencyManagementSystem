@@ -41,7 +41,8 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 return NotFound();
             }
 
-            return View(department);
+            return RedirectToAction("Index", "Operations",
+                new { id = department.Id});
         }
 
         // GET: Departments/Create
@@ -147,6 +148,10 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             var department = await _context.Departments.FindAsync(id);
             if (department != null)
             {
+                // removing operations of the department
+                var operations = _context.Operations
+                    .Where(operation => operation.DepartmentId == id);
+                _context.Operations.RemoveRange(operations);
                 _context.Departments.Remove(department);
             }
             
