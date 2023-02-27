@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Створити</h1>
 
-<h4>Operation</h4>
+<h4>Операцію</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,10 +24,6 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DepartmentId" class="control-label"></label>
-                <select asp-for="DepartmentId" class ="form-control" asp-items="ViewBag.DepartmentId"></select>
-            </div>
-            <div class="form-group">
                 <label asp-for="DateStarted" class="control-label"></label>
                 <input asp-for="DateStarted" class="form-control" />
                 <span asp-validation-for="DateStarted" class="text-danger"></span>
@@ -37,15 +33,18 @@
                 <input asp-for="DateEnded" class="form-control" />
                 <span asp-validation-for="DateEnded" class="text-danger"></span>
             </div>
+            
+            <input type="hidden" value="@ViewBag.DepartmentId" name="DepartmentId"/>
+            
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Створити" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-route-id="@ViewBag.DepartmentId">Назад</a>
 </div>
 
 @section Scripts {

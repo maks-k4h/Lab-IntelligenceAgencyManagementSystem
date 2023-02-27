@@ -55,10 +55,13 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             return View(operation);
         }
 
-        // GET: Operations/Create
-        public IActionResult Create()
+        // GET: Operations/Create/5
+        public IActionResult Create(int? id)
         {
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Id");
+            if (id == null)
+                return RedirectToAction("Index", "Departments");
+            
+            ViewBag.DepartmentId = id;            
             return View();
         }
 
@@ -67,7 +70,7 @@ namespace IntelligenceAgencyManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,DepartmentId,DateStarted,DateEnded")] Operation operation)
+        public async Task<IActionResult> Create([Bind("Name,Description,DepartmentId,DateStarted,DateEnded")] Operation operation)
         {
             if (ModelState.IsValid)
             {
@@ -126,7 +129,7 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Operations", new {id = operation.DepartmentId});
             }
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Id", operation.DepartmentId);
             return View(operation);
