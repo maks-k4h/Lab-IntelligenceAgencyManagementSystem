@@ -9,11 +9,11 @@ using IntelligenceAgencyManagementSystem;
 
 namespace IntelligenceAgencyManagementSystem.Views
 {
-    public class PersonFiles : Controller
+    public class PersonFilesController : Controller
     {
         private readonly IaDbContext _context;
 
-        public PersonFiles(IaDbContext context)
+        public PersonFilesController(IaDbContext context)
         {
             _context = context;
         }
@@ -21,7 +21,8 @@ namespace IntelligenceAgencyManagementSystem.Views
         // GET: PersonFiles
         public async Task<IActionResult> Index()
         {
-            var iaDbContext = _context.PersonFiles.Include(p => p.Gender).Include(p => p.MilitaryInformation);
+            var iaDbContext = _context.PersonFiles.Include(p => p.Gender);
+
             return View(await iaDbContext.ToListAsync());
         }
 
@@ -35,12 +36,19 @@ namespace IntelligenceAgencyManagementSystem.Views
 
             var personFile = await _context.PersonFiles
                 .Include(p => p.Gender)
-                .Include(p => p.MilitaryInformation)
+                .Include(p => p.MilitaryInformations)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (personFile == null)
             {
                 return NotFound();
             }
+
+            var militaryInformationQuery = _context.MilitaryInformations
+                .Where(information => information.PersonFileId == id);
+            if (militaryInformationQuery.Any())
+                ViewBag.MilitaryInformation = militaryInformationQuery.First();
+            else
+                ViewBag.MilitaryInformation = null!;
 
             return View(personFile);
         }
@@ -58,50 +66,77 @@ namespace IntelligenceAgencyManagementSystem.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,SecondName,GenderId,BirthDate,DeathDate,FamilyStatus,Education,Experience,MilitaryInformationId,HealthInformation,LegalInformation")] PersonFile personFile)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,SecondName,GenderId,BirthDate,DeathDate,FamilyStatus,Education,Experience,HealthInformation,LegalInformation")] PersonFile personFile)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(personFile);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", new
+                {
+                    id = personFile.Id, 
+                    type="Details"
+                });
             }
             ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Id", personFile.GenderId);
-            ViewData["MilitaryInformationId"] = new SelectList(_context.MilitaryInformations, "Id", "Id", personFile.MilitaryInformationId);
-            return View(personFile);
+            return View();
         }
 
-        // GET: PersonFiles/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: PersonFiles/Edit/5/General
+        public async Task<IActionResult> Edit(int? id, string? type)
         {
             if (id == null || _context.PersonFiles == null)
             {
                 return NotFound();
             }
-
+            
             var personFile = await _context.PersonFiles.FindAsync(id);
             if (personFile == null)
             {
                 return NotFound();
             }
-            ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name", personFile.GenderId);
-            ViewData["MilitaryInformationId"] = new SelectList(_context.MilitaryInformations, "Id", "Id", personFile.MilitaryInformationId);
-            return View(personFile);
+
+            if (type == null || type.Trim().ToLower() == "general")
+            {
+                // edit general information
+                
+                ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name", personFile.GenderId);
+                return View("EditGeneral",personFile);
+            }
+            if (type != null && type.Trim().ToLower() == "details")
+            {
+                // edit details
+                
+                return View("EditDetails",personFile);
+            }
+
+            if (type != null && type.Trim().ToLower() == "military")
+            {
+                // edit military information
+
+                return RedirectToAction("Create", "MilitaryInformation", personFile.Id);
+            }
+            
+            // unknown request
+            return NotFound();
         }
 
-        // POST: PersonFiles/Edit/5
+        // POST: PersonFiles/Edit/5/General
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,SecondName,GenderId,BirthDate,DeathDate,FamilyStatus,Education,Experience,MilitaryInformationId,HealthInformation,LegalInformation")] PersonFile personFile)
+        public async Task<IActionResult> Edit(int id, string? type, [Bind("Id,FirstName,SecondName,GenderId,BirthDate,DeathDate,FamilyStatus,Education,Experience,MilitaryInformationId,HealthInformation,LegalInformation")] PersonFile personFile)
         {
-            if (id != personFile.Id)
+            if (id != personFile.Id || type == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            type = type.ToLower().Trim();
+
+            if (ModelState.IsValid && 
+                (type != "general" || type != "details"))
             {
                 try
                 {
@@ -119,30 +154,47 @@ namespace IntelligenceAgencyManagementSystem.Views
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                if (type.Trim().ToLower() == "general")
+                    return RedirectToAction("Edit", new
+                    {
+                        id = id, 
+                        type = "details"
+                    });
+                
+                if (type.Trim().ToLower() == "details")
+                    return RedirectToAction("Create", "MilitaryInformation", new
+                    {
+                        id = id
+                    });
             }
             ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Id", personFile.GenderId);
-            ViewData["MilitaryInformationId"] = new SelectList(_context.MilitaryInformations, "Id", "Id", personFile.MilitaryInformationId);
-            return View(personFile);
+            return View("EditGeneral", personFile);
         }
 
         // GET: PersonFiles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.PersonFiles == null)
+            if (id == null || _context.PersonFiles == null || _context.MilitaryInformations == null)
             {
                 return NotFound();
             }
 
             var personFile = await _context.PersonFiles
                 .Include(p => p.Gender)
-                .Include(p => p.MilitaryInformation)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (personFile == null)
             {
                 return NotFound();
             }
-
+            
+            var militaryInformationQuery = _context.MilitaryInformations
+                .Where(information => information.PersonFileId == id);
+            if (militaryInformationQuery.Any())
+                ViewBag.MilitaryInformation = militaryInformationQuery.First();
+            else
+                ViewBag.MilitaryInformation = null!;
+            
             return View(personFile);
         }
 
@@ -158,6 +210,15 @@ namespace IntelligenceAgencyManagementSystem.Views
             var personFile = await _context.PersonFiles.FindAsync(id);
             if (personFile != null)
             {
+                // remove dependencies — military information
+                var militaryInformationRequest = _context.MilitaryInformations
+                    .Where(information => information.PersonFileId == id);
+                if (militaryInformationRequest.Any())
+                    foreach (var militaryInformation in militaryInformationRequest)
+                    {
+                        _context.MilitaryInformations.Remove(militaryInformation);
+                    }
+
                 _context.PersonFiles.Remove(personFile);
             }
             

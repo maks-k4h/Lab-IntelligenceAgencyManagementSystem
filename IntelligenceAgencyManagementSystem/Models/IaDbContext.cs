@@ -38,14 +38,20 @@ public partial class IaDbContext : DbContext
     public virtual DbSet<TasksToPersonFile> TasksToPersonFiles { get; set; }
 
     public virtual DbSet<WorkingInDepartment> WorkingInDepartments { get; set; }
-    
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseMySql("server=localhost;user=root;password=1234567890;database=IA_DB", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.31-mysql"));
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder
+            .UseCollation("utf8mb4_0900_ai_ci")
+            .HasCharSet("utf8mb4");
+
         modelBuilder.Entity<AgentsToOp>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("AgentsToOps", "IA_DB");
 
             entity.HasIndex(e => e.PersonFileId, "AgentsToOpsAgentFk");
 
@@ -73,15 +79,9 @@ public partial class IaDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("CoverRoles", "IA_DB");
-
             entity.HasIndex(e => e.GenderId, "CoverRolesGenderFk");
 
             entity.Property(e => e.ActivitySummary).HasMaxLength(512);
-            entity.Property(e => e.BirthDate).HasColumnType("date");
-            entity.Property(e => e.DateActivated).HasColumnType("date");
-            entity.Property(e => e.DateDeactivated).HasColumnType("date");
-            entity.Property(e => e.DeathDate).HasColumnType("date");
             entity.Property(e => e.FirstName).HasMaxLength(50);
             entity.Property(e => e.Legend).HasMaxLength(512);
             entity.Property(e => e.SecondName).HasMaxLength(50);
@@ -95,10 +95,6 @@ public partial class IaDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("Departments", "IA_DB");
-
-            entity.Property(e => e.DateClosed).HasColumnType("date");
-            entity.Property(e => e.DateCreated).HasColumnType("date");
             entity.Property(e => e.Description).HasMaxLength(512);
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
@@ -109,8 +105,6 @@ public partial class IaDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("Genders", "IA_DB");
-
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsFixedLength();
@@ -120,24 +114,27 @@ public partial class IaDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("MilitaryInformation", "IA_DB");
+            entity.ToTable("MilitaryInformation");
+
+            entity.HasIndex(e => e.PersonFileId, "MilitaryInformationPersonFileFk");
 
             entity.Property(e => e.FullInformation).HasMaxLength(512);
             entity.Property(e => e.MilitaryRank)
                 .HasMaxLength(70)
                 .IsFixedLength();
+
+            entity.HasOne(d => d.PersonFile).WithMany(p => p.MilitaryInformations)
+                .HasForeignKey(d => d.PersonFileId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("MilitaryInformationPersonFileFk");
         });
 
         modelBuilder.Entity<Operation>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("Operations", "IA_DB");
-
             entity.HasIndex(e => e.DepartmentId, "OperationsDepartmentFk");
 
-            entity.Property(e => e.DateEnded).HasColumnType("date");
-            entity.Property(e => e.DateStarted).HasColumnType("date");
             entity.Property(e => e.Description).HasMaxLength(512);
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
@@ -153,14 +150,8 @@ public partial class IaDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("PersonFiles", "IA_DB");
-
             entity.HasIndex(e => e.GenderId, "PersonFilesGenderFk");
 
-            entity.HasIndex(e => e.MilitaryInformationId, "PersonFilesMilitaryInformationFk");
-
-            entity.Property(e => e.BirthDate).HasColumnType("date");
-            entity.Property(e => e.DeathDate).HasColumnType("date");
             entity.Property(e => e.Education).HasMaxLength(512);
             entity.Property(e => e.Experience).HasMaxLength(512);
             entity.Property(e => e.FamilyStatus).HasMaxLength(256);
@@ -176,17 +167,11 @@ public partial class IaDbContext : DbContext
             entity.HasOne(d => d.Gender).WithMany(p => p.PersonFiles)
                 .HasForeignKey(d => d.GenderId)
                 .HasConstraintName("PersonFilesGenderFk");
-
-            entity.HasOne(d => d.MilitaryInformation).WithMany(p => p.PersonFiles)
-                .HasForeignKey(d => d.MilitaryInformationId)
-                .HasConstraintName("PersonFilesMilitaryInformationFk");
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("Roles", "IA_DB");
 
             entity.Property(e => e.Title)
                 .HasMaxLength(70)
@@ -196,8 +181,6 @@ public partial class IaDbContext : DbContext
         modelBuilder.Entity<Task>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("Tasks", "IA_DB");
 
             entity.HasIndex(e => e.StatusId, "TaskStatusFk");
 
@@ -226,8 +209,6 @@ public partial class IaDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("TaskStatuses", "IA_DB");
-
             entity.Property(e => e.Description).HasMaxLength(128);
             entity.Property(e => e.Title)
                 .HasMaxLength(50)
@@ -237,8 +218,6 @@ public partial class IaDbContext : DbContext
         modelBuilder.Entity<TasksToPersonFile>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("TasksToPersonFiles", "IA_DB");
 
             entity.HasIndex(e => e.PersonFileId, "TasksToAgencyWorkersAgencyWorkerFk");
 
@@ -261,7 +240,7 @@ public partial class IaDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("WorkingInDepartment", "IA_DB");
+            entity.ToTable("WorkingInDepartment");
 
             entity.HasIndex(e => e.DepartmentId, "WorkingInDepartmentDepartmentFk");
 
@@ -269,8 +248,6 @@ public partial class IaDbContext : DbContext
 
             entity.HasIndex(e => e.RoleId, "WorkingInDepartmentRoleFk");
 
-            entity.Property(e => e.DateEnded).HasColumnType("date");
-            entity.Property(e => e.DateStarted).HasColumnType("date");
             entity.Property(e => e.Description).HasMaxLength(512);
 
             entity.HasOne(d => d.Department).WithMany(p => p.WorkingInDepartments)

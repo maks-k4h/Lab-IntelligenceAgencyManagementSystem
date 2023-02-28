@@ -11,5 +11,7 @@ public partial class MilitaryInformation
 
     public string FullInformation { get; set; } = null!;
 
-    public virtual ICollection<PersonFile> PersonFiles { get; } = new List<PersonFile>();
+    public int PersonFileId { get; set; }
+
+    public virtual PersonFile? PersonFile { get; set; }
 }

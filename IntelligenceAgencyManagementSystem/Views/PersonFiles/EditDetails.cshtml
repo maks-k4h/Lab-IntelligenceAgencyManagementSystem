@@ -1,0 +1,65 @@
+@model IntelligenceAgencyManagementSystem.PersonFile
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.FirstName @Model.SecondName</h1>
+
+<h4>Файл особи</h4>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" asp-route-type="details">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="FirstName" />
+            <input type="hidden" asp-for="SecondName" />
+            <input type="hidden" asp-for="GenderId" />
+            <input type="hidden" asp-for="BirthDate" />
+            <input type="hidden" asp-for="DeathDate" />
+            
+            <hr />
+            <h5>Детальна інформація</h5>
+            
+            <div class="form-group">
+                <label asp-for="FamilyStatus" class="control-label"></label>
+                <input asp-for="FamilyStatus" class="form-control" />
+                <span asp-validation-for="FamilyStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Education" class="control-label"></label>
+                <input asp-for="Education" class="form-control" />
+                <span asp-validation-for="Education" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Experience" class="control-label"></label>
+                <input asp-for="Experience" class="form-control" />
+                <span asp-validation-for="Experience" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HealthInformation" class="control-label"></label>
+                <input asp-for="HealthInformation" class="form-control" />
+                <span asp-validation-for="HealthInformation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LegalInformation" class="control-label"></label>
+                <input asp-for="LegalInformation" class="form-control" />
+                <span asp-validation-for="LegalInformation" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Далі" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-type="general" asp-route-id="@Model.Id">Назад до загальної інформації</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

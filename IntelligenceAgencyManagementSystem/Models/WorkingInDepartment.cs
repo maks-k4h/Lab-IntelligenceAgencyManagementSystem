@@ -15,9 +15,9 @@ public partial class WorkingInDepartment
 
     public string? Description { get; set; }
 
-    public DateTime DateStarted { get; set; }
+    public DateOnly DateStarted { get; set; }
 
-    public DateTime? DateEnded { get; set; }
+    public DateOnly? DateEnded { get; set; }
 
     public virtual Department Department { get; set; } = null!;
 

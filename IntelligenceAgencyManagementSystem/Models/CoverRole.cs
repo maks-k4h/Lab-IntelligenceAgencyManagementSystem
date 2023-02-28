@@ -13,13 +13,13 @@ public partial class CoverRole
 
     public int? GenderId { get; set; }
 
-    public DateTime? BirthDate { get; set; }
+    public DateOnly? BirthDate { get; set; }
 
-    public DateTime? DeathDate { get; set; }
+    public DateOnly? DeathDate { get; set; }
 
-    public DateTime? DateActivated { get; set; }
+    public DateOnly? DateActivated { get; set; }
 
-    public DateTime? DateDeactivated { get; set; }
+    public DateOnly? DateDeactivated { get; set; }
 
     public string? Legend { get; set; }
 

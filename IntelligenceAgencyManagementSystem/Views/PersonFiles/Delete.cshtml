@@ -70,14 +70,33 @@
             @Html.DisplayNameFor(model => model.Gender)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender.Id)
+            @Html.DisplayFor(model => model.Gender.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MilitaryInformation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MilitaryInformation.Id)
-        </dd>
+        
+        @if (ViewBag.MilitaryInformation != null)
+                {
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.MilitaryInformations.First().MilitaryRank)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.MilitaryInformations.First().MilitaryRank)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.MilitaryInformations.First().FullInformation)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.MilitaryInformations.First().FullInformation)
+                    </dd>
+                }
+                else
+                {
+                    <dt class="col-sm-2">
+                        Військова інформація
+                    </dt>
+                    <dt class="col-sm-2">
+                        Відсутня
+                    </dt>
+                }
     </dl>
     
     <form asp-action="Delete">

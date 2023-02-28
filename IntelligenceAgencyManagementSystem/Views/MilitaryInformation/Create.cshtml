@@ -1,0 +1,45 @@
+@model IntelligenceAgencyManagementSystem.MilitaryInformation
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewBag.PersonFile.FirstName @ViewBag.PersonFile.SecondName</h1>
+
+<h4>Файл особи</h4>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <h4>Військова інформація</h4>
+            <hr />
+            
+            <input asp-for="PersonFileId" type="hidden" value="@ViewBag.PersonFile.Id"/>
+            
+            <div class="form-group">
+                <label asp-for="MilitaryRank" class="control-label"></label>
+                <input asp-for="MilitaryRank" class="form-control" />
+                <span asp-validation-for="MilitaryRank" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullInformation" class="control-label"></label>
+                <input asp-for="FullInformation" class="form-control" />
+                <span asp-validation-for="FullInformation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Створити" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="PersonFiles" asp-action="Details" asp-route-id="@ViewBag.PersonFile.Id">Пропустити</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
