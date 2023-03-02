@@ -13,6 +13,7 @@ public partial class MilitaryInformation
     public string? MilitaryRank { get; set; }
 
     [Display(Name = "Детальна інформація")]
+    [Required(ErrorMessage = "Необхідно заповнити дане поле")]
     public string FullInformation { get; set; } = null!;
 
     public int PersonFileId { get; set; }
