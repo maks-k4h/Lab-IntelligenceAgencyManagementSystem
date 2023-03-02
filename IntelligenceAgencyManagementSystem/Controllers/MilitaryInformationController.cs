@@ -19,17 +19,13 @@ namespace IntelligenceAgencyManagementSystem.Controllers
         }
 
         // GET: MilitaryInformation/5
+        // Get military information by person file id
         public async Task<IActionResult> Index(int? id)
         {
-            if (id == null || _context.PersonFiles == null || _context.MilitaryInformations == null)
-                return NotFound();
-
-            var personFile = _context.PersonFiles.Find(id);
-
-            if (personFile == null)
-                return NotFound();
-
-            return View("Details", null);
+            return RedirectToAction("Details", "PersonFiles", new
+            {
+                id = id
+            });
         }
 
         // GET: MilitaryInformation/Create/5
@@ -147,6 +143,8 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 return NotFound();
             }
 
+            ViewBag.PersonFile = await _context.PersonFiles.FindAsync(militaryInformation.PersonFileId);
+
             return View(militaryInformation);
         }
 
@@ -160,13 +158,19 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 return Problem("Entity set 'IaDbContext.MilitaryInformations'  is null.");
             }
             var militaryInformation = await _context.MilitaryInformations.FindAsync(id);
+            int personFileId;
             if (militaryInformation != null)
             {
+                personFileId = militaryInformation.PersonFileId;
                 _context.MilitaryInformations.Remove(militaryInformation);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "PersonFiles", new
+                {
+                    id = personFileId
+                });
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction("Index", "PersonFiles");
         }
 
         private bool MilitaryInformationExists(int id)

@@ -95,7 +95,9 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Id", operation.DepartmentId);
+
+            ViewBag.Department = await _context.Departments.FindAsync(operation.DepartmentId);
+            
             return View(operation);
         }
 
@@ -131,7 +133,8 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 }
                 return RedirectToAction("Index", "Operations", new {id = operation.DepartmentId});
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Id", operation.DepartmentId);
+            
+            ViewBag.Department = await _context.Departments.FindAsync(operation.DepartmentId);            
             return View(operation);
         }
 
