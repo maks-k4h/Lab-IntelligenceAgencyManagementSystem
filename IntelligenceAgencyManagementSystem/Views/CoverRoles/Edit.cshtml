@@ -1,0 +1,75 @@
+@model IntelligenceAgencyManagementSystem.CoverRole
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Редагування</h1>
+
+<h4>Персонажа</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecondName" class="control-label"></label>
+                <input asp-for="SecondName" class="form-control" />
+                <span asp-validation-for="SecondName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GenderId" class="control-label"></label>
+                <select asp-for="GenderId" class="form-control" asp-items="ViewBag.GenderId"></select>
+                <span asp-validation-for="GenderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeathDate" class="control-label"></label>
+                <input asp-for="DeathDate" class="form-control" />
+                <span asp-validation-for="DeathDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateActivated" class="control-label"></label>
+                <input asp-for="DateActivated" class="form-control" />
+                <span asp-validation-for="DateActivated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateDeactivated" class="control-label"></label>
+                <input asp-for="DateDeactivated" class="form-control" />
+                <span asp-validation-for="DateDeactivated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Legend" class="control-label"></label>
+                <input asp-for="Legend" class="form-control" />
+                <span asp-validation-for="Legend" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActivitySummary" class="control-label"></label>
+                <input asp-for="ActivitySummary" class="form-control" />
+                <span asp-validation-for="ActivitySummary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Зберегти" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад до переліку</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
