@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IntelligenceAgencyManagementSystem;
 
-public partial class MilitaryInformation
+public partial class MilitaryFile
 {
     [Display(Name = "Ідентифікатор")]
     public int Id { get; set; }
@@ -16,7 +16,7 @@ public partial class MilitaryInformation
     [Required(ErrorMessage = "Необхідно заповнити дане поле")]
     public string FullInformation { get; set; } = null!;
 
-    public int PersonFileId { get; set; }
+    public int WorkerId { get; set; }
 
-    public virtual PersonFile? PersonFile { get; set; }
+    public virtual Worker? Worker { get; set; }
 }

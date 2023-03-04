@@ -46,9 +46,14 @@ app.MapControllerRoute(
     new { controller = "Archive" });
 
 app.MapControllerRoute(
-    name: "PersonFiles",
-    pattern: "PersonFiles/{action=Index}/{id?}",
-    new { controller = "PersonFiles" });
+    name: "Workers",
+    pattern: "Workers/{action=Index}/{id?}",
+    new { controller = "Workers" });
+
+app.MapControllerRoute(
+    name: "MilitaryFiles",
+    pattern: "MilitaryFiles/{action=Index}/{id?}",
+    new { controller = "MilitaryFiles" });
 
 app.MapControllerRoute(
     name: "CoverRoles",

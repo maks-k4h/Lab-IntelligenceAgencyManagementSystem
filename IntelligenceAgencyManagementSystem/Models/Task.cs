@@ -21,5 +21,5 @@ public partial class Task
 
     public virtual TaskStatus Status { get; set; } = null!;
 
-    public virtual ICollection<TasksToPersonFile> TasksToPersonFiles { get; } = new List<TasksToPersonFile>();
+    public virtual ICollection<TasksToWorkers> TasksToWorkers { get; } = new List<TasksToWorkers>();
 }

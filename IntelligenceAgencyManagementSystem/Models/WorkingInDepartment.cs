@@ -7,7 +7,7 @@ public partial class WorkingInDepartment
 {
     public int Id { get; set; }
 
-    public int PersonFileId { get; set; }
+    public int WorkerId { get; set; }
 
     public int DepartmentId { get; set; }
 
@@ -21,7 +21,7 @@ public partial class WorkingInDepartment
 
     public virtual Department Department { get; set; } = null!;
 
-    public virtual PersonFile PersonFile { get; set; } = null!;
+    public virtual Worker Worker { get; set; } = null!;
 
     public virtual Role Role { get; set; } = null!;
 }

@@ -50,7 +50,7 @@
             Співробітники департаменту
         </dt>
         <dd class=col-sm-10>
-            <a asp-controller="PersonFiles" asp-action="Index">Знайдено @ViewBag.WorkersNum</a>
+            <a asp-controller="Workers" asp-action="Index" asp-route-department="@Model.Id">Знайдено @ViewBag.WorkersNum</a>
         </dd>
     </dl>
 </div>

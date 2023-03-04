@@ -25,7 +25,7 @@ public partial class Operation
     [Display(Name = "Дата закінчення")]
     public DateOnly? DateEnded { get; set; }
 
-    public virtual ICollection<AgentsToOp> AgentsToOps { get; } = new List<AgentsToOp>();
+    public virtual ICollection<WorkersToOp> WorkersToOps { get; } = new List<WorkersToOp>();
 
     public virtual Department? Department { get; set; } = null;
 

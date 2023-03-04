@@ -1,14 +1,14 @@
-@model IntelligenceAgencyManagementSystem.MilitaryInformation
+@model IntelligenceAgencyManagementSystem.MilitaryFile
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Деталі</h1>
 
 <div>
-    <h4>MilitaryInformation</h4>
+    <h4>Військова інформація</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -27,5 +27,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Редагувати</a> |
-    <a asp-action="Edit" asp-route-type="general" asp-route-id="@Model.PersonFileId">Назад до детальної інформації</a>
+    <a asp-action="Edit" asp-route-type="general" asp-route-id="@Model.WorkerId">Назад до детальної інформації</a>
 </div>

@@ -1,23 +1,23 @@
-@model IntelligenceAgencyManagementSystem.MilitaryInformation
+@model IntelligenceAgencyManagementSystem.MilitaryFile
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>@ViewBag.PersonFile.FirstName @ViewBag.PersonFile.SecondName</h1>
+<h1>@ViewBag.Worker.FirstName @ViewBag.Worker.SecondName</h1>
 
-<h4>Файл особи</h4>
+<h4>Співробітник</h4>
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" value="@Model.Id"/>
+            <input type="hidden" asp-for="WorkerId" value="@ViewBag.Worker.Id" />
             
-            <h4>Військова інформація</h4>
-            <hr />
-            
-            <input asp-for="PersonFileId" type="hidden" value="@ViewBag.PersonFile.Id"/>
+            <hr />  
+            <h5>Військова інформація</h5>
             
             <div class="form-group">
                 <label asp-for="MilitaryRank" class="control-label"></label>
@@ -30,14 +30,15 @@
                 <span asp-validation-for="FullInformation" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Створити" class="btn btn-primary" />
+                <input type="submit" value="Зберегти" class="btn btn-primary" />
+                <a asp-action="Delete" asp-route-id="@Model.Id">Видалити</a>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-controller="PersonFiles" asp-action="Details" asp-route-id="@ViewBag.PersonFile.Id">Пропустити</a>
+    <a asp-controller="Workers" asp-action="Edit" asp-route-id="@ViewBag.Worker.Id" asp-route-type="details">До детальної інформації</a>
 </div>
 
 @section Scripts {

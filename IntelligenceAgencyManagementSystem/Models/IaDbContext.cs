@@ -15,7 +15,7 @@ public partial class IaDbContext : DbContext
     {
     }
 
-    public virtual DbSet<AgentsToOp> AgentsToOps { get; set; }
+    public virtual DbSet<WorkersToOp> AgentsToOps { get; set; }
 
     public virtual DbSet<CoverRole> CoverRoles { get; set; }
 
@@ -23,11 +23,11 @@ public partial class IaDbContext : DbContext
 
     public virtual DbSet<Gender> Genders { get; set; }
 
-    public virtual DbSet<MilitaryInformation> MilitaryInformations { get; set; }
+    public virtual DbSet<MilitaryFile> MilitaryFiles { get; set; }
 
     public virtual DbSet<Operation> Operations { get; set; }
 
-    public virtual DbSet<PersonFile> PersonFiles { get; set; }
+    public virtual DbSet<Worker> Workers { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
@@ -35,13 +35,9 @@ public partial class IaDbContext : DbContext
 
     public virtual DbSet<TaskStatus> TaskStatuses { get; set; }
 
-    public virtual DbSet<TasksToPersonFile> TasksToPersonFiles { get; set; }
+    public virtual DbSet<TasksToWorkers> TasksToWorkers { get; set; }
 
     public virtual DbSet<WorkingInDepartment> WorkingInDepartments { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=localhost;user=root;password=1234567890;database=IA_DB", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.31-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,30 +45,30 @@ public partial class IaDbContext : DbContext
             .UseCollation("utf8mb4_0900_ai_ci")
             .HasCharSet("utf8mb4");
 
-        modelBuilder.Entity<AgentsToOp>(entity =>
+        modelBuilder.Entity<WorkersToOp>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.HasIndex(e => e.PersonFileId, "AgentsToOpsAgentFk");
+            entity.HasIndex(e => e.WorkerId, "WorkersToOpsWorkerFk");
 
-            entity.HasIndex(e => e.CoverRoleId, "AgentsToOpsCoverRoleFk");
+            entity.HasIndex(e => e.CoverRoleId, "WorkersToOpsCoverRoleFk");
 
-            entity.HasIndex(e => e.OperationId, "AgentsToOpsOperationFk");
+            entity.HasIndex(e => e.OperationId, "WorkersToOpsOperationFk");
 
-            entity.HasOne(d => d.CoverRole).WithMany(p => p.AgentsToOps)
+            entity.HasOne(d => d.CoverRole).WithMany(p => p.WorkersToOps)
                 .HasForeignKey(d => d.CoverRoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("AgentsToOpsCoverRoleFk");
+                .HasConstraintName("WorkersToOpsCoverRoleFk");
 
-            entity.HasOne(d => d.Operation).WithMany(p => p.AgentsToOps)
+            entity.HasOne(d => d.Operation).WithMany(p => p.WorkersToOps)
                 .HasForeignKey(d => d.OperationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("AgentsToOpsOperationFk");
+                .HasConstraintName("WorkersToOpsOperationFk");
 
-            entity.HasOne(d => d.PersonFile).WithMany(p => p.AgentsToOps)
-                .HasForeignKey(d => d.PersonFileId)
+            entity.HasOne(d => d.Worker).WithMany(p => p.AgentsToOps)
+                .HasForeignKey(d => d.WorkerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("AgentsToOpsAgentFk");
+                .HasConstraintName("WorkersToOpsAgentFk");
         });
 
         modelBuilder.Entity<CoverRole>(entity =>
@@ -110,23 +106,23 @@ public partial class IaDbContext : DbContext
                 .IsFixedLength();
         });
 
-        modelBuilder.Entity<MilitaryInformation>(entity =>
+        modelBuilder.Entity<MilitaryFile>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("MilitaryInformation");
+            entity.ToTable("MilitaryFiles");
 
-            entity.HasIndex(e => e.PersonFileId, "MilitaryInformationPersonFileFk");
+            entity.HasIndex(e => e.WorkerId, "MilitaryFilesWorkerFk");
 
             entity.Property(e => e.FullInformation).HasMaxLength(512);
             entity.Property(e => e.MilitaryRank)
                 .HasMaxLength(70)
                 .IsFixedLength();
 
-            entity.HasOne(d => d.PersonFile).WithMany(p => p.MilitaryInformations)
-                .HasForeignKey(d => d.PersonFileId)
+            entity.HasOne(d => d.Worker).WithMany(p => p.MilitaryFiles)
+                .HasForeignKey(d => d.WorkerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("MilitaryInformationPersonFileFk");
+                .HasConstraintName("MilitaryFilesWorkerFk");
         });
 
         modelBuilder.Entity<Operation>(entity =>
@@ -146,11 +142,11 @@ public partial class IaDbContext : DbContext
                 .HasConstraintName("OperationsDepartmentFk");
         });
 
-        modelBuilder.Entity<PersonFile>(entity =>
+        modelBuilder.Entity<Worker>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.HasIndex(e => e.GenderId, "PersonFilesGenderFk");
+            entity.HasIndex(e => e.GenderId, "WorkersGenderFk");
 
             entity.Property(e => e.Education).HasMaxLength(512);
             entity.Property(e => e.Experience).HasMaxLength(512);
@@ -164,9 +160,9 @@ public partial class IaDbContext : DbContext
                 .HasMaxLength(50)
                 .IsFixedLength();
 
-            entity.HasOne(d => d.Gender).WithMany(p => p.PersonFiles)
+            entity.HasOne(d => d.Gender).WithMany(p => p.Workers)
                 .HasForeignKey(d => d.GenderId)
-                .HasConstraintName("PersonFilesGenderFk");
+                .HasConstraintName("WorkersGenderFk");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -215,25 +211,25 @@ public partial class IaDbContext : DbContext
                 .IsFixedLength();
         });
 
-        modelBuilder.Entity<TasksToPersonFile>(entity =>
+        modelBuilder.Entity<TasksToWorkers>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.HasIndex(e => e.PersonFileId, "TasksToAgencyWorkersAgencyWorkerFk");
+            entity.HasIndex(e => e.WorkerId, "TasksToWorkersWorkerFk");
 
-            entity.HasIndex(e => e.TaskId, "TasksToAgencyWorkersTaskFk");
+            entity.HasIndex(e => e.TaskId, "TasksToWorkersTaskFk");
 
-            entity.Property(e => e.PersonFileId).HasColumnName("personFileId");
+            entity.Property(e => e.WorkerId).HasColumnName("WorkerId");
 
-            entity.HasOne(d => d.PersonFile).WithMany(p => p.TasksToPersonFiles)
-                .HasForeignKey(d => d.PersonFileId)
+            entity.HasOne(d => d.Worker).WithMany(p => p.TasksToWorker)
+                .HasForeignKey(d => d.WorkerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("TasksToAgencyWorkersAgencyWorkerFk");
+                .HasConstraintName("TasksToWorkersWorkerFk");
 
-            entity.HasOne(d => d.Task).WithMany(p => p.TasksToPersonFiles)
+            entity.HasOne(d => d.Task).WithMany(p => p.TasksToWorkers)
                 .HasForeignKey(d => d.TaskId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("TasksToAgencyWorkersTaskFk");
+                .HasConstraintName("TasksToWorkersTaskFk");
         });
 
         modelBuilder.Entity<WorkingInDepartment>(entity =>
@@ -244,7 +240,7 @@ public partial class IaDbContext : DbContext
 
             entity.HasIndex(e => e.DepartmentId, "WorkingInDepartmentDepartmentFk");
 
-            entity.HasIndex(e => e.PersonFileId, "WorkingInDepartmentPersonFileFk");
+            entity.HasIndex(e => e.WorkerId, "WorkingInDepartmentWorkerfFk");
 
             entity.HasIndex(e => e.RoleId, "WorkingInDepartmentRoleFk");
 
@@ -255,10 +251,10 @@ public partial class IaDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("WorkingInDepartmentDepartmentFk");
 
-            entity.HasOne(d => d.PersonFile).WithMany(p => p.WorkingInDepartments)
-                .HasForeignKey(d => d.PersonFileId)
+            entity.HasOne(d => d.Worker).WithMany(p => p.WorkingInDepartments)
+                .HasForeignKey(d => d.WorkerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("WorkingInDepartmentPersonFileFk");
+                .HasConstraintName("WorkingInDepartmentWorkerFk");
 
             entity.HasOne(d => d.Role).WithMany(p => p.WorkingInDepartments)
                 .HasForeignKey(d => d.RoleId)

@@ -25,7 +25,13 @@
                 <p>Опис поки відсутній...</p>
             }
                                                               
-            <p><a asp-action="Details" asp-route-id="@item.Id">Більше</a></p>
+            <div>
+                <a asp-controller="Operations" asp-action="Index" asp-route-id="@item.Id">Операції</a>
+                |
+                <a asp-action="Details" asp-route-id="@item.Id">Про департамент</a>
+                |
+                <a asp-controller="Workers" asp-action="Index" asp-route-department="@item.Id">Співробітники</a>
+            </div>
         </div>    
         
         <br/>

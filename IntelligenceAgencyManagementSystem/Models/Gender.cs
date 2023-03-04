@@ -14,5 +14,5 @@ public partial class Gender
 
     public virtual ICollection<CoverRole> CoverRoles { get; } = new List<CoverRole>();
 
-    public virtual ICollection<PersonFile> PersonFiles { get; } = new List<PersonFile>();
+    public virtual ICollection<Worker> Workers { get; } = new List<Worker>();
 }

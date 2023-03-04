@@ -38,7 +38,7 @@ public partial class CoverRole
     [Display(Name = "Активність")]
     public string? ActivitySummary { get; set; }
 
-    public virtual ICollection<AgentsToOp> AgentsToOps { get; } = new List<AgentsToOp>();
+    public virtual ICollection<WorkersToOp> WorkersToOps { get; } = new List<WorkersToOp>();
 
     [Display(Name = "Гендер")]
     public virtual Gender? Gender { get; set; }

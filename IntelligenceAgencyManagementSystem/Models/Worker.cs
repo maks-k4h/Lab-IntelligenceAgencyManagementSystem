@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IntelligenceAgencyManagementSystem;
 
-public partial class PersonFile
+public partial class Worker
 {
     [Display(Name = "Ідентифікатор")]
     public int Id { get; set; }
@@ -40,14 +40,14 @@ public partial class PersonFile
     [Display(Name = "Юридична інформація")]
     public string? LegalInformation { get; set; }
 
-    public virtual ICollection<AgentsToOp> AgentsToOps { get; } = new List<AgentsToOp>();
+    public virtual ICollection<WorkersToOp> AgentsToOps { get; } = new List<WorkersToOp>();
 
     [Display(Name = "Гендер")]
     public virtual Gender? Gender { get; set; }
 
-    public virtual ICollection<MilitaryInformation> MilitaryInformations { get; } = new List<MilitaryInformation>();
+    public virtual ICollection<MilitaryFile> MilitaryFiles { get; } = new List<MilitaryFile>();
 
-    public virtual ICollection<TasksToPersonFile> TasksToPersonFiles { get; } = new List<TasksToPersonFile>();
+    public virtual ICollection<TasksToWorkers> TasksToWorker { get; } = new List<TasksToWorkers>();
 
     public virtual ICollection<WorkingInDepartment> WorkingInDepartments { get; } = new List<WorkingInDepartment>();
 }

@@ -1,4 +1,4 @@
-@model IntelligenceAgencyManagementSystem.MilitaryInformation
+@model IntelligenceAgencyManagementSystem.MilitaryFile
 
 @{
     ViewData["Title"] = "Delete";
@@ -13,17 +13,17 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PersonFile.FirstName)
+            @Html.DisplayNameFor(model => model.Worker.FirstName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PersonFile.FirstName)
+            @Html.DisplayFor(model => model.Worker.FirstName)
         </dd>
         
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PersonFile.SecondName)
+            @Html.DisplayNameFor(model => model.Worker.SecondName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PersonFile.SecondName)
+            @Html.DisplayFor(model => model.Worker.SecondName)
         </dd>
         
         <dt class="col-sm-2">
@@ -44,6 +44,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Видалити" class="btn btn-danger" /> |
-        <a asp-action="Index" asp-route-id="@Model.PersonFileId">Скасувати</a>
+        <a asp-action="Index" asp-route-id="@Model.WorkerId">Скасувати</a>
     </form>
 </div>

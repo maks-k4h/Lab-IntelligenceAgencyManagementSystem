@@ -1,14 +1,15 @@
-@model IntelligenceAgencyManagementSystem.PersonFile
+@model IntelligenceAgencyManagementSystem.Worker
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Деталі</h1>
+<h1>Видалити</h1>
 
+<h3>Ви справді бажаєте видалити?</h3>
 <div>
-    <h4>Файл особи</h4>
+    <h4>Співробітник</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -17,14 +18,54 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
-        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.SecondName)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SecondName)
         </dd>
-        
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BirthDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DeathDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DeathDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FamilyStatus)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FamilyStatus)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Education)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Education)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Experience)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Experience)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HealthInformation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HealthInformation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LegalInformation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LegalInformation)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Gender)
         </dt>
@@ -32,86 +73,35 @@
             @Html.DisplayFor(model => model.Gender.Name)
         </dd>
         
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BirthDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BirthDate)
-        </dd>
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeathDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeathDate)
-        </dd>
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FamilyStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FamilyStatus)
-        </dd>
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Education)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Education)
-        </dd>
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Experience)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Experience)
-        </dd>
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HealthInformation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HealthInformation)
-        </dd>
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LegalInformation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LegalInformation)
-        </dd>
-        
-        
-        @if (ViewBag.MilitaryInformation != null)
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MilitaryInformations.First().MilitaryRank)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MilitaryInformations.First().MilitaryRank)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MilitaryInformations.First().FullInformation)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MilitaryInformations.First().FullInformation)
-            </dd>
-        }
-        else
-        {
-            <dt class="col-sm-2">
-                Військова інформація
-            </dt>
-            <dd class="col-sm-2">
-                Відсутня
-            </dd>
-        }
+        @if (ViewBag.MilitaryFile != null)
+                {
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.MilitaryFiles.First().MilitaryRank)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.MilitaryFiles.First().MilitaryRank)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.MilitaryFiles.First().FullInformation)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.MilitaryFiles.First().FullInformation)
+                    </dd>
+                }
+                else
+                {
+                    <dt class="col-sm-2">
+                        Військова інформація
+                    </dt>
+                    <dt class="col-sm-2">
+                        Відсутня
+                    </dt>
+                }
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Редагувати</a> 
-    |
-    <a asp-action="Delete" asp-route-id="@Model?.Id">Видалити</a> 
-    |
-    <a asp-action="Index">Назад</a>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Видалити" class="btn btn-danger" /> |
+        <a asp-action="Index">Назад</a>
+    </form>
 </div>
