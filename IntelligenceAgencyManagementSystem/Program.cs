@@ -30,7 +30,34 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "Departments",
+    pattern: "Departments/{action=Index}/{id?}",
+    new { controller = "Departments" });
+
+app.MapControllerRoute(
+    name: "Operations",
+    pattern: "Operations/{action=Index}/{id?}",
+    new { controller = "Operations" });
+
+
+app.MapControllerRoute(
+    name: "Archive",
+    pattern: "Archive/{action=Index}/{id?}",
+    new { controller = "Archive" });
+
+app.MapControllerRoute(
+    name: "PersonFiles",
+    pattern: "PersonFiles/{action=Index}/{id?}",
+    new { controller = "PersonFiles" });
+
+app.MapControllerRoute(
+    name: "CoverRoles",
+    pattern: "CoverRoles/{action=Index}/{id?}",
+    new { controller = "CoverRoles" });
+
+app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "/{action}",
+    new {controller = "Home", action = "Index"});
 
 app.Run();
