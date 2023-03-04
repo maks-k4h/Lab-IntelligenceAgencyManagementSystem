@@ -41,8 +41,10 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction("Index", "Operations",
-                new { id = department.Id});
+            ViewBag.OperationsNum = _context.Operations.Count(operation => operation.DepartmentId == id);
+            ViewBag.WorkersNum = _context.WorkingInDepartments.Count(wid => wid.DepartmentId == id);
+
+            return View(department);
         }
 
         // GET: Departments/Create
