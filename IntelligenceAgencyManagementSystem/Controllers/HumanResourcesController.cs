@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IntelligenceAgencyManagementSystem.Controllers
 {
-    public class ArchiveController : Controller
+    public class HumanResourcesController : Controller
     {
         // GET: Archive
         public IActionResult Index()
