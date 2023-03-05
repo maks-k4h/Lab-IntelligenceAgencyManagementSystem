@@ -55,6 +55,12 @@ namespace IntelligenceAgencyManagementSystem.Views
             else
                 ViewBag.MilitaryFile = null!;
 
+            ViewBag.WorkingInDepartment = await _context.WorkingInDepartments
+                .Where(wid => wid.WorkerId == id)
+                .Include(wid => wid.Role)
+                .Include(wid => wid.Department)
+                .ToListAsync();
+
             return View(worker);
         }
 

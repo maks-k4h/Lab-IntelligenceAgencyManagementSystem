@@ -108,6 +108,63 @@
         }
     </dl>
 </div>
+
+<br/>
+
+<h3>Діяльність</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Позиція
+            </th>
+            <th>
+                Від
+            </th>
+            <th>
+                До
+            </th>
+            <th>
+                Департамент
+            </th>
+            
+            <th></th>
+            
+        </tr>
+    </thead>
+    <tbody>
+@foreach (WorkingInDepartment item in ViewBag.WorkingInDepartment) {
+        <tr>
+            <td>
+                @Html.DisplayFor(i => item.Role.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(i => item.DateStarted)
+            </td>
+            <td>
+                @if (item.DateEnded == null)
+                {
+                    <span>До теперішнього часу</span>
+                }
+                else
+                {
+                    @Html.DisplayFor(i => item.DateEnded)
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(i => item.Department.Name)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Більше</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<br/>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Редагувати</a> 
     |
