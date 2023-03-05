@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IntelligenceAgencyManagementSystem;
 
+[Display(Name = "Департамент")]
 public partial class Department
 {
     [Display(Name="Ідентифікатор")]
@@ -23,6 +24,7 @@ public partial class Department
     [Display(Name="Дата закриття")]
     public DateOnly? DateClosed { get; set; }
 
+    [Display(Name="Операції")]
     public virtual ICollection<Operation> Operations { get; } = new List<Operation>();
 
     public virtual ICollection<WorkingInDepartment> WorkingInDepartments { get; } = new List<WorkingInDepartment>();

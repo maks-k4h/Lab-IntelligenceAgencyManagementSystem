@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IntelligenceAgencyManagementSystem;
 
+[Display(Name = "Персонаж")]
 public partial class CoverRole
 {
     [Display(Name = "Ідентифікатор")]

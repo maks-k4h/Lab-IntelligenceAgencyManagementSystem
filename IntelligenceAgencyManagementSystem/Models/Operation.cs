@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IntelligenceAgencyManagementSystem;
 
+[Display(Name="Операція")]
 public partial class Operation
 {
     [Display(Name = "Ідентифікатор")]
@@ -27,7 +28,9 @@ public partial class Operation
 
     public virtual ICollection<WorkersToOp> WorkersToOps { get; } = new List<WorkersToOp>();
 
+    [Display(Name="Департамент")]
     public virtual Department? Department { get; set; } = null;
 
+    [Display(Name="Завдання")]
     public virtual ICollection<Task> Tasks { get; } = new List<Task>();
 }

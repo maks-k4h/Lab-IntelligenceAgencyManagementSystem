@@ -29,6 +29,9 @@
                 <input asp-for="FullInformation" class="form-control" />
                 <span asp-validation-for="FullInformation" class="text-danger"></span>
             </div>
+            
+            <br/>
+            
             <div class="form-group">
                 <input type="submit" value="Зберегти" class="btn btn-primary" />
                 <a asp-action="Delete" asp-route-id="@Model.Id">Видалити</a>

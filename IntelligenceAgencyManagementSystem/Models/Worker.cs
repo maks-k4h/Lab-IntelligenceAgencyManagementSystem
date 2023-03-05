@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntelligenceAgencyManagementSystem;
 
+[Display(Name = "Співробітник")]
 public partial class Worker
 {
     [Display(Name = "Ідентифікатор")]
@@ -15,16 +16,19 @@ public partial class Worker
     public string FirstName { get; set; } = null!;
 
     [Display(Name = "Прізвище")]
+    [Required(ErrorMessage = "Необхідно вказати прізвище")]
     public string? SecondName { get; set; }
 
     [NotMapped]
+    [Display(Name="Повне імʼя")]
     public string? FullName => FirstName + " " + SecondName;
 
     [Display(Name = "Ідентифікатор гендеру")]
     public int? GenderId { get; set; }
 
     [Display(Name = "Дата народження")]
-    public DateOnly? BirthDate { get; set; }
+    [Required(ErrorMessage = "Необхідно вказати дату народження")]
+    public DateOnly BirthDate { get; set; }
 
     [Display(Name = "Дата смерті")]
     public DateOnly? DeathDate { get; set; }
@@ -35,7 +39,7 @@ public partial class Worker
     [Display(Name = "Освіта")]
     public string? Education { get; set; }
 
-    [Display(Name = "Досвід")]
+    [Display(Name = "Попередній досвід")]
     public string? Experience { get; set; }
 
     [Display(Name = "Стан здоровʼя")]
@@ -49,9 +53,11 @@ public partial class Worker
     [Display(Name = "Гендер")]
     public virtual Gender? Gender { get; set; }
 
+    [Display(Name="Військова інформація")]
     public virtual ICollection<MilitaryFile> MilitaryFiles { get; } = new List<MilitaryFile>();
 
     public virtual ICollection<TasksToWorkers> TasksToWorker { get; } = new List<TasksToWorkers>();
 
+    [Display(Name="Трудова діяльність")]
     public virtual ICollection<WorkingInDepartment> WorkingInDepartments { get; } = new List<WorkingInDepartment>();
 }
