@@ -88,7 +88,15 @@
                 @Html.DisplayNameFor(model => model.MilitaryFiles.First().MilitaryRank)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MilitaryFiles.First().MilitaryRank)
+                @if (Model.MilitaryFiles.First().MilitaryRank == null
+                     || Model.MilitaryFiles.First().MilitaryRank.Trim().Length == 0)
+                {
+                    <p>Відсутнє</p>
+                }
+                else
+                {
+                    @Html.DisplayFor(model => model.MilitaryFiles.First().MilitaryRank)
+                }
             </dd>
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.MilitaryFiles.First().FullInformation)
@@ -156,7 +164,7 @@
                 @Html.DisplayFor(i => item.Department.Name)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Більше</a>
+                <a asp-controller="WorkingInDepartment" asp-action="Details" asp-route-id="@item.Id">Більше</a>
             </td>
         </tr>
 }

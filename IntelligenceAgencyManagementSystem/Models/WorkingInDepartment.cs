@@ -19,9 +19,9 @@ public partial class WorkingInDepartment
 
     public DateOnly? DateEnded { get; set; }
 
-    public virtual Department Department { get; set; } = null!;
+    public virtual Department? Department { get; set; } = null!;
 
-    public virtual Worker Worker { get; set; } = null!;
+    public virtual Worker? Worker { get; set; } = null!;
 
-    public virtual Role Role { get; set; } = null!;
+    public virtual Role? Role { get; set; } = null!;
 }

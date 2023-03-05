@@ -51,6 +51,13 @@ app.MapControllerRoute(
     new { controller = "Workers" });
 
 app.MapControllerRoute(
+    name: "WorkingInDepartments",
+    pattern: "WorkingInDepartments/{action}/{id?}",
+    new {controller = "WorkingInDepartment"}
+    //constraints: new {action = @"^Details$"}
+);
+
+app.MapControllerRoute(
     name: "Roles",
     pattern: "Roles/{action=Index}/{id?}",
     new { controller = "Roles" });

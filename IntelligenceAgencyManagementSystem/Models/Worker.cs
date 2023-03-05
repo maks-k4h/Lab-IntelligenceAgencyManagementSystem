@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntelligenceAgencyManagementSystem;
 
@@ -15,6 +16,9 @@ public partial class Worker
 
     [Display(Name = "Прізвище")]
     public string? SecondName { get; set; }
+
+    [NotMapped]
+    public string? FullName => FirstName + " " + SecondName;
 
     [Display(Name = "Ідентифікатор гендеру")]
     public int? GenderId { get; set; }
