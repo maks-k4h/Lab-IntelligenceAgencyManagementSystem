@@ -17,7 +17,7 @@ public partial class Worker
 
     [Display(Name = "Прізвище")]
     [Required(ErrorMessage = "Необхідно вказати прізвище")]
-    public string? SecondName { get; set; }
+    public string SecondName { get; set; } = null!;
 
     [NotMapped]
     [Display(Name="Повне імʼя")]

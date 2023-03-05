@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -41,8 +43,20 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 return NotFound();
             }
 
-            ViewBag.OperationsNum = _context.Operations.Count(operation => operation.DepartmentId == id);
-            ViewBag.WorkersNum = _context.WorkingInDepartments.Count(wid => wid.DepartmentId == id);
+            ViewBag.AllOperationsNum = _context.Operations
+                .Count(operation => operation.DepartmentId == id);
+            ViewBag.CurrentOperationsNum = _context.Operations
+                .Count(operation => operation.DepartmentId == id && 
+                                    (operation.DateEnded == null || operation.DateEnded > DateOnly.FromDateTime(DateTime.Now)));
+
+            ViewBag.AllWorkersNum = _context.Workers
+                .Count(worker => worker.WorkingInDepartments
+                    .Any(wid => wid.DepartmentId == id));
+            ViewBag.CurrentWorkersNum = _context.Workers
+                .Count(worker => worker
+                    .WorkingInDepartments
+                    .Any(wid => wid.DepartmentId == id && (wid.DateEnded == null || wid.DateEnded > DateOnly.FromDateTime(DateTime.Now))));
+            
 
             return View(department);
         }
