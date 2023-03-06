@@ -87,6 +87,11 @@ app.MapControllerRoute(
     new {controller = "Tasks"});
 
 app.MapControllerRoute(
+    name: "TaskStatuses",
+    pattern: "TaskStatuses/{action=Index}/{id?}",
+    new {controller = "TaskStatuses"});
+
+app.MapControllerRoute(
     name: "default",
     pattern: "/{action}",
     new {controller = "Home", action = "Index"});

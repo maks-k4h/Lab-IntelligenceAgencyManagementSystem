@@ -1,21 +1,18 @@
-@model IntelligenceAgencyManagementSystem.Task
+@model IntelligenceAgencyManagementSystem.TaskStatus
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Створити завдання</h1>
+<h1>Створити</h1>
 
-<h4>Операція "@ViewBag.OperationName"</h4>
+<h4>Статус завдання</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <input type="hidden" asp-for="OperationId" value="@ViewBag.OperationId"/>
-            
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -27,10 +24,6 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StatusId" class="control-label"></label>
-                <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusId"></select>
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Створити" class="btn btn-primary" />
             </div>
         </form>
@@ -38,9 +31,7 @@
 </div>
 
 <div>
-    <a asp-action="Index" asp-route-id="@ViewBag.OperationId">До переліку завдань</a>
-    |
-    <a asp-controller="TaskStatuses" asp-action="Index">Статуси завдань</a>
+    <a asp-action="Index">До переліку статусів</a>
 </div>
 
 @section Scripts {
