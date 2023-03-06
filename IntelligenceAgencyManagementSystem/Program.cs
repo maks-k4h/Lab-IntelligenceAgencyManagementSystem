@@ -54,7 +54,6 @@ app.MapControllerRoute(
     name: "WorkingInDepartments",
     pattern: "WorkingInDepartments/{action}/{id?}",
     new {controller = "WorkingInDepartment"}
-    //constraints: new {action = @"^Details$"}
 );
 
 app.MapControllerRoute(
@@ -71,6 +70,12 @@ app.MapControllerRoute(
     name: "CoverRoles",
     pattern: "CoverRoles/{action=Index}/{id?}",
     new { controller = "CoverRoles" });
+
+app.MapControllerRoute(
+    name: "OperationsManagement",
+    pattern: "OperationsManagement/{action=Index}/{id?}",
+    new {controller = "OperationsManagement"}
+    );
 
 app.MapControllerRoute(
     name: "default",
