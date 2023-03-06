@@ -79,8 +79,12 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "OperationsManagement",
     pattern: "OperationsManagement/{action=Index}/{id?}",
-    new {controller = "OperationsManagement"}
-    );
+    new {controller = "OperationsManagement"});
+
+app.MapControllerRoute(
+    name: "Tasks",
+    pattern: "Tasks/{action=Index}/{id?}",
+    new {controller = "Tasks"});
 
 app.MapControllerRoute(
     name: "default",

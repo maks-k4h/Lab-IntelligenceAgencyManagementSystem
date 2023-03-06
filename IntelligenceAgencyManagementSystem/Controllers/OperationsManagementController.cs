@@ -38,6 +38,8 @@ namespace IntelligenceAgencyManagementSystem.Models
             ViewBag.WorkersNum = _context.Workers.Count(worker =>
                 _context.WorkersToOps.Any(wo => wo.WorkerId == worker.Id && wo.OperationId == id));
 
+            ViewBag.TasksNum = _context.Tasks.Count(task => task.OperationId == id);
+                
             return View("Details", operation);
             
         }

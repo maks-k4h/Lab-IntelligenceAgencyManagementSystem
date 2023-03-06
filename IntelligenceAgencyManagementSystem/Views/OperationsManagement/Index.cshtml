@@ -29,7 +29,11 @@
                 @Html.DisplayFor(modelItem => item.Department.Name)
             </td>
             <td>
-                <a asp-action="Index" asp-route-id="@item.Id">Обрати</a>
+                <a asp-action="Index" asp-route-id="@item.Id">Більше</a>
+                |
+                <a asp-controller="WorkersToOperations" asp-action="Index" asp-route-id="@item.Id">Учасники</a>
+                |
+                <a asp-controller="Tasks" asp-action="Index" asp-route-id="@item.Id">Завдання</a>
             </td>
         </tr>
 }
