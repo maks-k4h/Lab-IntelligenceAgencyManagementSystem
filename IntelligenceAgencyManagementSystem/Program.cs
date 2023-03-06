@@ -72,6 +72,11 @@ app.MapControllerRoute(
     new { controller = "CoverRoles" });
 
 app.MapControllerRoute(
+    name: "WorkersToOperations",
+    pattern: "WorkersToOperations/{action=Index}/{id?}",
+    new { controller = "WorkersToOperations" });
+
+app.MapControllerRoute(
     name: "OperationsManagement",
     pattern: "OperationsManagement/{action=Index}/{id?}",
     new {controller = "OperationsManagement"}

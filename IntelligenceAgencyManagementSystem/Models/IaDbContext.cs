@@ -15,7 +15,7 @@ public partial class IaDbContext : DbContext
     {
     }
 
-    public virtual DbSet<WorkersToOp> AgentsToOps { get; set; }
+    public virtual DbSet<WorkersToOp> WorkersToOps { get; set; }
 
     public virtual DbSet<CoverRole> CoverRoles { get; set; }
 
@@ -65,7 +65,7 @@ public partial class IaDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("WorkersToOpsOperationFk");
 
-            entity.HasOne(d => d.Worker).WithMany(p => p.AgentsToOps)
+            entity.HasOne(d => d.Worker).WithMany(p => p.WorkersToOps)
                 .HasForeignKey(d => d.WorkerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("WorkersToOpsAgentFk");

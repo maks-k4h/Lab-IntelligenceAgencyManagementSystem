@@ -1,0 +1,44 @@
+@model IEnumerable<IntelligenceAgencyManagementSystem.WorkersToOp>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Учасники операції</h1>
+
+<h2>@ViewBag.Operation.Name</h2>
+
+<p>
+    <a asp-action="Create" asp-route-id="@ViewBag.Operation.Id">Додати учасника</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Worker)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CoverRole)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-controller="Workers" asp-action="Details" asp-route-id="@item.WorkerId">@Html.DisplayFor(modelItem => item.Worker.FullName)</a>
+            </td>
+            <td>
+                <a asp-controller="CoverRoles" asp-action="Details" asp-route-id="@item.CoverRoleId">@Html.DisplayFor(modelItem => item.CoverRole.FullName)</a>
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Деталі</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

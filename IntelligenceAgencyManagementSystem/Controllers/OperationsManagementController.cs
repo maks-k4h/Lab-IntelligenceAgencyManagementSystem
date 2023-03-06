@@ -18,7 +18,7 @@ namespace IntelligenceAgencyManagementSystem.Models
             _context = context;
         }
 
-        // GET: OperationsManagement
+        // GET: OperationsManagement/5
         public async Task<IActionResult> Index(int? id)
         {
             if (id == null)
@@ -34,6 +34,9 @@ namespace IntelligenceAgencyManagementSystem.Models
             {
                 return NotFound();
             }
+
+            ViewBag.WorkersNum = _context.Workers.Count(worker =>
+                _context.WorkersToOps.Any(wo => wo.WorkerId == worker.Id && wo.OperationId == id));
 
             return View("Details", operation);
             

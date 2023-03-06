@@ -13,9 +13,9 @@ public partial class WorkersToOp
 
     public int WorkerId { get; set; }
 
-    public virtual CoverRole CoverRole { get; set; } = null!;
+    public virtual CoverRole? CoverRole { get; set; } = null!;
 
-    public virtual Operation Operation { get; set; } = null!;
+    public virtual Operation? Operation { get; set; } = null!;
 
-    public virtual Worker Worker { get; set; } = null!;
+    public virtual Worker? Worker { get; set; } = null!;
 }

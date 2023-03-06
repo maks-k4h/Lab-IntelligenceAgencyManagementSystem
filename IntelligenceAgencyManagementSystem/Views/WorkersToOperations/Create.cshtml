@@ -1,0 +1,41 @@
+@model IntelligenceAgencyManagementSystem.WorkersToOp
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Додати</h1>
+
+<h4>Учасник операції "@ViewBag.Operation.Name"</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OperationId" value="@ViewBag.Operation.Id"/>
+            
+            <div class="form-group">
+                <label asp-for="CoverRole" class="control-label"></label>
+                <select asp-for="CoverRoleId" class ="form-control" asp-items="ViewBag.CoverRoleId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker" class="control-label"></label>
+                <select asp-for="WorkerId" class ="form-control" asp-items="ViewBag.WorkerId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Створити" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-id="@ViewBag.Operation.Id">До учасників</a>
+    |
+    <a asp-controller="CoverRoles" asp-action="Index">Персонажі</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

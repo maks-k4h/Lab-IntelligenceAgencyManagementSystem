@@ -48,7 +48,7 @@ public partial class Worker
     [Display(Name = "Юридична інформація")]
     public string? LegalInformation { get; set; }
 
-    public virtual ICollection<WorkersToOp> AgentsToOps { get; } = new List<WorkersToOp>();
+    public virtual ICollection<WorkersToOp> WorkersToOps { get; } = new List<WorkersToOp>();
 
     [Display(Name = "Гендер")]
     public virtual Gender? Gender { get; set; }

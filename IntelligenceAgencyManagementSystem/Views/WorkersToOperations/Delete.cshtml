@@ -1,0 +1,41 @@
+@model IntelligenceAgencyManagementSystem.WorkersToOp
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Видалення</h1>
+
+<h3>Ви справді бажаєте видалити запис?</h3>
+<div>
+    <h4>Учасник операції</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CoverRole)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CoverRole.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Operation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Operation.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Worker)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Worker.FirstName)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Видалити" class="btn btn-danger" /> 
+        |
+        <a asp-action="Index" asp-route-id="@Model.OperationId">До переліку учасників</a>
+    </form>
+</div>

@@ -18,6 +18,8 @@ public partial class CoverRole
     [Required(ErrorMessage = "Необхідно вказати прізвище")]
     public string SecondName { get; set; } = null!;
 
+    public string FullName => FirstName + " " + SecondName;
+
     [Display(Name = "Ідентифікатор гендеру")]
     public int? GenderId { get; set; }
 
