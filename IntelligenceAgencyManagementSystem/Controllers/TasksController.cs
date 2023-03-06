@@ -57,6 +57,10 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 return NotFound();
             }
 
+            ViewBag.TasksToWorkers = _context.TasksToWorkers
+                .Where(tw => tw.TaskId == id)
+                .Include(tw => tw.Worker).ToList();
+
             return View(task);
         }
 
@@ -77,8 +81,6 @@ namespace IntelligenceAgencyManagementSystem.Controllers
         }
 
         // POST: Tasks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OperationId,Title,Description,StatusId,DateStatusSet")] Task task)
@@ -104,6 +106,57 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             
             ViewData["StatusId"] = new SelectList(_context.TaskStatuses, "Id", "Title", task.StatusId);
             return View(task);
+        }
+        
+        // GET: Tasks/AddWorker/5
+        public async Task<IActionResult> AddWorker(int id)
+        {
+            var task = await _context.Tasks.FindAsync(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.TaskTitle = task.Title;
+            ViewBag.TaskId = task.Id;
+            
+            ViewData["WorkerId"] = new SelectList(_context.Workers, "Id", "FullName");
+            return View();
+        }
+
+        // POST: Tasks/AddWorker
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddWorker([Bind("TaskId, WorkerId")] TasksToWorkers taskToWorker)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_context.TasksToWorkers.Any(tw =>
+                        tw.WorkerId == taskToWorker.WorkerId && tw.TaskId == taskToWorker.TaskId))
+                    return RedirectToAction(nameof(AddWorker), new
+                    {
+                        id = taskToWorker.TaskId
+                    });
+                
+                _context.Add(taskToWorker);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new
+                {
+                    id = taskToWorker.TaskId
+                });
+            }
+            
+            var task = await _context.Tasks.FindAsync(taskToWorker.TaskId);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            
+            ViewBag.TaskTitle = task.Title;
+            ViewBag.TaskId = task.Id;
+            
+            ViewData["WorkerId"] = new SelectList(_context.Workers, "Id", "FullName");
+            return View();
         }
 
         // GET: Tasks/Edit/5
@@ -165,9 +218,9 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), new
+                return RedirectToAction(nameof(Details), new
                 {
-                    id = task.OperationId
+                    id = task.Id
                 });
             }
 
@@ -223,6 +276,30 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             return RedirectToAction(nameof(Index), new
             {
                 id = operationId
+            });
+        }
+        
+        // POST: Tasks/RemoveWorker/5
+        // Remove TasksToWorkers record by its id
+        [HttpPost, ActionName("RemoveWorker")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveWorkerConfirmed(int id)
+        {
+            if (_context.TasksToWorkers == null)
+            {
+                return Problem("Entity set 'IaDbContext.TasksToWorkers'  is null.");
+            }
+            var taskToWorker = await _context.TasksToWorkers.FindAsync(id);
+            int? taskId = taskToWorker?.TaskId;
+            if (taskToWorker != null)
+            {
+                _context.TasksToWorkers.Remove(taskToWorker);
+            }
+            
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new
+            {
+                id = taskId
             });
         }
 

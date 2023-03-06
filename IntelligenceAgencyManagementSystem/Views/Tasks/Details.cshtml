@@ -43,6 +43,48 @@
         </dd>
     </dl>
 </div>
+
+<h3>Виконавці</h3>
+
+<a asp-action="AddWorker" asp-route-id="@Model.Id">Додати виконавця</a>
+
+@if (ViewBag.TasksToWorkers.Count > 0)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Імʼя
+            </th>
+            
+            <th style="width: 50%"></th>
+            
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (TasksToWorkers item in ViewBag.TasksToWorkers) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(i => item.Worker.FullName)
+                </td>
+                <td style="align-content: end">
+                    <form asp-action="RemoveWorker">
+                        <input type="hidden" name="id" value="@item.Id"/>
+                        <input type="submit" value="Вилучити" class="btn btn-danger" />
+                        |
+                        <a asp-controller="Workers" asp-action="Details" asp-route-id="@item.WorkerId">Про виконавця</a>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Виконавців не знайдено</p>
+}
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Редагувати</a>
     |
