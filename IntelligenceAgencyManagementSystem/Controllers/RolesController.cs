@@ -132,6 +132,8 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 return NotFound();
             }
 
+            ViewBag.CanDelete = !_context.WorkingInDepartments.Any(wid => wid.RoleId == id);
+
             return View(role);
         }
 
@@ -149,7 +151,7 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             {
                 _context.Roles.Remove(role);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

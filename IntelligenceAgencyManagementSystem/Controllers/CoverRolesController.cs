@@ -137,6 +137,8 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 return NotFound();
             }
 
+            ViewBag.CanDelete = !_context.WorkersToOps.Any(wop => wop.CoverRoleId == id);
+
             return View(coverRole);
         }
 

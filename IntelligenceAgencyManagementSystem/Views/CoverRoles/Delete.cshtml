@@ -70,7 +70,15 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Видалити" class="btn btn-danger" /> |
+        @if (ViewBag.CanDelete)
+            {
+                <input type="submit" value="Видалити" class="btn btn-danger" />
+            }
+            else
+            {
+                <span style="color: red">Даний персонаж використовується</span>
+            }
+        |
         <a asp-action="Index">Повернутися до переліку</a>
     </form>
 </div>

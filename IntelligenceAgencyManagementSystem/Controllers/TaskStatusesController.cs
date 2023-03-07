@@ -114,6 +114,8 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 return NotFound();
             }
 
+            ViewBag.CanDelete = !_context.Tasks.Any(task => task.StatusId == id);
+
             return View(taskStatus);
         }
 
