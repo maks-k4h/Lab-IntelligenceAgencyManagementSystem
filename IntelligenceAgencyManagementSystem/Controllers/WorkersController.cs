@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -64,7 +65,7 @@ namespace IntelligenceAgencyManagementSystem.Views
             return View(worker);
         }
 
-        // GET: Worker/Create
+        // GET: Workers/Create
         public IActionResult Create()
         {
             ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
@@ -79,17 +80,27 @@ namespace IntelligenceAgencyManagementSystem.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,SecondName,GenderId,BirthDate,DeathDate,FamilyStatus,Education,Experience,HealthInformation,LegalInformation")] Worker worker)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(worker);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Edit", new
+                if (worker.BirthDate != null && worker.DeathDate != null && worker.DeathDate < worker.BirthDate)
+                    throw new Exception("Введіть вірні дати");
+                
+                if (ModelState.IsValid)
                 {
-                    id = worker.Id, 
-                    type="Details"
-                });
+                    _context.Add(worker);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Edit", new
+                    {
+                        id = worker.Id, 
+                        type="Details"
+                    });
+                }
             }
-            ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Id", worker.GenderId);
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+            }
+            ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name", worker.GenderId);
             return View();
         }
 
@@ -151,10 +162,27 @@ namespace IntelligenceAgencyManagementSystem.Views
             {
                 try
                 {
+                    if (worker.BirthDate != null && worker.DeathDate != null && worker.DeathDate < worker.BirthDate)
+                        throw new Exception("Введіть вірні дати");
+                    
                     _context.Update(worker);
                     await _context.SaveChangesAsync();
+                    
+                    if (type.Trim().ToLower() == "general")
+                        return RedirectToAction("Edit", new
+                        {
+                            id = id, 
+                            type = "details"
+                        });
+                
+                    if (type.Trim().ToLower() == "details")
+                        return RedirectToAction("Create", "MilitaryFiles", new
+                        {
+                            id = id
+                        });
+                    
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception e)
                 {
                     if (!WorkerExists(worker.Id))
                     {
@@ -162,24 +190,11 @@ namespace IntelligenceAgencyManagementSystem.Views
                     }
                     else
                     {
-                        throw;
+                        ViewBag.ErrorMessage = e.Message;
                     }
                 }
-
-                if (type.Trim().ToLower() == "general")
-                    return RedirectToAction("Edit", new
-                    {
-                        id = id, 
-                        type = "details"
-                    });
-                
-                if (type.Trim().ToLower() == "details")
-                    return RedirectToAction("Create", "MilitaryFiles", new
-                    {
-                        id = id
-                    });
             }
-            ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Id", worker.GenderId);
+            ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name", worker.GenderId);
             return View("EditGeneral", worker);
         }
 

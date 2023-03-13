@@ -74,11 +74,21 @@ namespace IntelligenceAgencyManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,DateCreated,DateClosed")] Department department)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(department);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (department.DateClosed != null && department.DateClosed < department.DateCreated)
+                    throw new Exception("Вкажіть коректні дати відкриття та закриття");
+                
+                if (ModelState.IsValid)
+                {
+                    _context.Add(department);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
             }
             return View(department);
         }
@@ -115,10 +125,14 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             {
                 try
                 {
+                    if (department.DateClosed != null && department.DateClosed < department.DateCreated)
+                        throw new Exception("Вкажіть коректні дати відкриття та закриття");
+                    
                     _context.Update(department);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception e)
                 {
                     if (!DepartmentExists(department.Id))
                     {
@@ -126,10 +140,9 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                     }
                     else
                     {
-                        throw;
+                        ViewBag.ErrorMessage = e.Message;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(department);
         }

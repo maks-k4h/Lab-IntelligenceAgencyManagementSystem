@@ -74,29 +74,29 @@
         </dd>
         
         @if (ViewBag.MilitaryFile != null)
-                {
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.MilitaryFiles.First().MilitaryRank)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.MilitaryFiles.First().MilitaryRank)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.MilitaryFiles.First().FullInformation)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.MilitaryFiles.First().FullInformation)
-                    </dd>
-                }
-                else
-                {
-                    <dt class="col-sm-2">
-                        Військова інформація
-                    </dt>
-                    <dt class="col-sm-2">
-                        Відсутня
-                    </dt>
-                }
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.MilitaryFiles.First().MilitaryRank)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MilitaryFiles.First().MilitaryRank)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.MilitaryFiles.First().FullInformation)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MilitaryFiles.First().FullInformation)
+            </dd>
+        }
+        else
+        {
+            <dt class="col-sm-2">
+                Військова інформація
+            </dt>
+            <dt class="col-sm-2">
+                Відсутня
+            </dt>
+        }
     </dl>
     
     <form asp-action="Delete">

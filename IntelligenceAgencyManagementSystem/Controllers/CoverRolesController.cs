@@ -58,11 +58,26 @@ namespace IntelligenceAgencyManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,SecondName,GenderId,BirthDate,DeathDate,DateActivated,DateDeactivated,Legend,ActivitySummary")] CoverRole coverRole)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(coverRole);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (coverRole.BirthDate != null && coverRole.DeathDate != null &&
+                    coverRole.DeathDate < coverRole.BirthDate)
+                    throw new Exception("Вкажіть правильні дати народження та смерті");
+                
+                if (coverRole.DateActivated != null && coverRole.DateDeactivated != null &&
+                    coverRole.DateDeactivated < coverRole.DateActivated)
+                    throw new Exception("Вкажіть правильні дати активності");
+                
+                if (ModelState.IsValid)
+                {
+                    _context.Add(coverRole);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
             }
             ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name", coverRole.GenderId);
             return View(coverRole);
@@ -101,10 +116,20 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             {
                 try
                 {
+                    if (coverRole.BirthDate != null && coverRole.DeathDate != null &&
+                        coverRole.DeathDate < coverRole.BirthDate)
+                        throw new Exception("Вкажіть правильні дати народження та смерті");
+                
+                    if (coverRole.DateActivated != null && coverRole.DateDeactivated != null &&
+                        coverRole.DateDeactivated < coverRole.DateActivated)
+                        throw new Exception("Вкажіть правильні дати активності");
+                    
                     _context.Update(coverRole);
                     await _context.SaveChangesAsync();
+                    
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception e)
                 {
                     if (!CoverRoleExists(coverRole.Id))
                     {
@@ -112,10 +137,9 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                     }
                     else
                     {
-                        throw;
+                        ViewBag.ErrorMessage = e.Message;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name", coverRole.GenderId);
             return View(coverRole);

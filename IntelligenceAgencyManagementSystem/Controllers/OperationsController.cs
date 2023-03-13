@@ -72,13 +72,25 @@ namespace IntelligenceAgencyManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Description,DepartmentId,DateStarted,DateEnded")] Operation operation)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(operation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new {id = operation.DepartmentId});
+                if (ModelState.IsValid)
+                {
+                    
+                    if (operation.DateStarted != null && operation.DateEnded != null &&
+                        operation.DateEnded < operation.DateStarted)
+                        throw new Exception("Вкажіть вірні дати початку та завершення операції");
+                    
+                    _context.Add(operation);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index), new {id = operation.DepartmentId});
+                }
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Id", operation.DepartmentId);
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+            }
+            ViewBag.DepartmentId = operation.DepartmentId;            
             return View(operation);
         }
 
@@ -117,10 +129,16 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             {
                 try
                 {
+                    if (operation.DateStarted != null && operation.DateEnded != null &&
+                        operation.DateEnded < operation.DateStarted)
+                        throw new Exception("Вкажіть вірні дати початку та завершення операції");
+                    
                     _context.Update(operation);
                     await _context.SaveChangesAsync();
+                    
+                    return RedirectToAction("Index", "Operations", new {id = operation.DepartmentId});
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception e)
                 {
                     if (!OperationExists(operation.Id))
                     {
@@ -128,10 +146,10 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                     }
                     else
                     {
-                        throw;
+                        ViewBag.ErrorMessage = e.Message;
                     }
                 }
-                return RedirectToAction("Index", "Operations", new {id = operation.DepartmentId});
+                
             }
             
             ViewBag.Department = await _context.Departments.FindAsync(operation.DepartmentId);            

@@ -49,6 +49,11 @@
             <input asp-for="Experience" type="hidden" value="@Model.Experience"/>
             <input asp-for="HealthInformation" type="hidden" value="@Model.HealthInformation"/>
             <input asp-for="LegalInformation" type="hidden" value="@Model.LegalInformation"/>
+
+            <br/>
+            <div>
+                <span style="color: #d95c4b">@ViewBag.ErrorMessage</span>
+            </div>
             
             <div class="form-group">
                 <input type="submit" value="Далі" class="btn btn-primary" />

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using IntelligenceAgencyManagementSystem;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IntelligenceAgencyManagementSystem;
 
@@ -28,9 +30,11 @@ public partial class Worker
 
     [Display(Name = "Дата народження")]
     [Required(ErrorMessage = "Необхідно вказати дату народження")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly BirthDate { get; set; }
 
     [Display(Name = "Дата смерті")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly? DeathDate { get; set; }
 
     [Display(Name = "Сімейний статус")]

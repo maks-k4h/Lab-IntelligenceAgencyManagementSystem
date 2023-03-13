@@ -24,15 +24,19 @@ public partial class CoverRole
     public int? GenderId { get; set; }
 
     [Display(Name = "Дата народження")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly? BirthDate { get; set; }
 
     [Display(Name = "Дата смерті")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly? DeathDate { get; set; }
 
     [Display(Name = "Дата активації")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly? DateActivated { get; set; }
 
     [Display(Name = "Дата деактивіції")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly? DateDeactivated { get; set; }
 
     [Display(Name = "Легенда")]

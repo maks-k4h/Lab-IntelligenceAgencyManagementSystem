@@ -21,9 +21,11 @@ public partial class Operation
     public int DepartmentId { get; set; }
 
     [Display(Name = "Дата початку")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly? DateStarted { get; set; }
 
     [Display(Name = "Дата закінчення")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly? DateEnded { get; set; }
 
     public virtual ICollection<WorkersToOp> WorkersToOps { get; } = new List<WorkersToOp>();

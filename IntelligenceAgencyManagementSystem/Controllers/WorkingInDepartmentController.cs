@@ -62,11 +62,22 @@ namespace IntelligenceAgencyManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,WorkerId,DepartmentId,RoleId,Description,DateStarted,DateEnded")] WorkingInDepartment workingInDepartment)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(workingInDepartment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (workingInDepartment.DateStarted != null && workingInDepartment.DateEnded != null &&
+                    workingInDepartment.DateEnded < workingInDepartment.DateStarted)
+                    throw new Exception("Введіть вірні дати");
+                
+                if (ModelState.IsValid)
+                {
+                    _context.Add(workingInDepartment);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
             }
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name", workingInDepartment.DepartmentId);
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Title", workingInDepartment.RoleId);
@@ -109,10 +120,16 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             {
                 try
                 {
+                    if (workingInDepartment.DateStarted != null && workingInDepartment.DateEnded != null &&
+                        workingInDepartment.DateEnded < workingInDepartment.DateStarted)
+                        throw new Exception("Введіть вірні дати");
+                    
                     _context.Update(workingInDepartment);
                     await _context.SaveChangesAsync();
+                    
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception e)
                 {
                     if (!WorkingInDepartmentExists(workingInDepartment.Id))
                     {
@@ -120,10 +137,9 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                     }
                     else
                     {
-                        throw;
+                        ViewBag.ErrorMessage = e.Message;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name", workingInDepartment.DepartmentId);
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Title", workingInDepartment.RoleId);

@@ -50,8 +50,11 @@
                 <input asp-for="DateEnded" class="form-control" />
                 <span asp-validation-for="DateEnded" class="text-danger"></span>
             </div>
-            
+
             <br/>
+            <div>
+                <span style="color: #d95c4b">@ViewBag.ErrorMessage</span>
+            </div>
             
             <div class="form-group">
                 <input type="submit" value="Зберегти" class="btn btn-primary" />

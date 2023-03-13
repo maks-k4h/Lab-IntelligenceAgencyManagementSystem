@@ -27,9 +27,11 @@ public partial class WorkingInDepartment
 
     [Display(Name = "Дата початку")]
     [Required(ErrorMessage = "Необхідно вказати дату початку")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly DateStarted { get; set; }
 
     [Display(Name = "Дата закінчення")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly? DateEnded { get; set; }
 
     [Display(Name = "Департамент")]
