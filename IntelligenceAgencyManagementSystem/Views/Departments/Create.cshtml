@@ -19,11 +19,6 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="DateCreated" class="control-label"></label>
                 <input asp-for="DateCreated" class="form-control" />
                 <span asp-validation-for="DateCreated" class="text-danger"></span>
@@ -33,10 +28,20 @@
                 <input asp-for="DateClosed" class="form-control" />
                 <span asp-validation-for="DateClosed" class="text-danger"></span>
             </div>
-            <br/>
-            <div>
-                <span class="text-danger">@ViewBag.ErrorMessage</span>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea class="form-control" asp-for="Description" rows="5"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            
+            <br/>
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <strong>@ViewBag.ErrorMessage</strong>
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Створити" class="btn btn-primary" />
             </div>

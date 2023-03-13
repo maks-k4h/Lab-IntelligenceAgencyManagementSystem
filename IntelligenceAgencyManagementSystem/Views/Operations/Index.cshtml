@@ -21,13 +21,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
+            <th class="col-2">
                 @Html.DisplayNameFor(model => model.DateStarted)
             </th>
-            <th>
+            <th class="col-2">
                 @Html.DisplayNameFor(model => model.DateEnded)
             </th>
-            <th></th>
+            <th class="col-3"></th>
         </tr>
     </thead>
     <tbody>
@@ -46,8 +46,10 @@
                 @Html.DisplayFor(modelItem => item.DateEnded)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Більше</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a>
+                |
+                <a asp-action="Details" asp-route-id="@item.Id">Більше</a>
+                |
                 <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
             </td>
         </tr>

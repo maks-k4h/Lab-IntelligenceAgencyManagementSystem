@@ -46,7 +46,9 @@
 
 <h3>Виконавці</h3>
 
-<a asp-action="AddWorker" asp-route-id="@Model.Id">Додати виконавця</a>
+<div style="margin-bottom: 20px">
+    <a asp-action="AddWorker" asp-route-id="@Model.Id">Додати виконавця</a>
+</div>
 
 @if (ViewBag.TasksToWorkers.Count > 0)
 {
@@ -82,7 +84,10 @@
 }
 else
 {
-    <p>Виконавців не знайдено</p>
+    <div class="alert alert-dismissible alert-info col-sm-4">
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <strong>Виконавців не знейдено!</strong> <a class="alert-link" asp-action="AddWorker" asp-route-id="@Model.Id">Додайте виконавця</a>
+    </div>
 }
 
 <div>

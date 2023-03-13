@@ -13,17 +13,20 @@
     
     @foreach (var item in Model) {
         
-        <div style="border-left: #dee2e6 4px solid;">
+        <div style="border-left: #dee2e6 4px solid; margin-bottom: 50px; margin-top: 20px; padding: 0 5%;">
             <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+            
+            <div>—</div>
                                                                 
             @if (item.Description != null && item.Description.Trim().Length != 0)
             {
-                <p>@Html.DisplayFor(modelItem => item.Description)</p>
+                <p style="padding: 0 15%">@Html.DisplayFor(modelItem => item.Description)</p>
             }
             else
             {
                 <p>Опис поки відсутній...</p>
             }
+            <br/>
                                                               
             <div>
                 <a asp-controller="Operations" asp-action="Index" asp-route-id="@item.Id">Операції</a>
@@ -32,9 +35,7 @@
                 |
                 <a asp-controller="Workers" asp-action="Index" asp-route-department="@item.Id">Співробітники</a>
             </div>
-        </div>    
-        
-        <br/>
+        </div>
     }
     
 </div>

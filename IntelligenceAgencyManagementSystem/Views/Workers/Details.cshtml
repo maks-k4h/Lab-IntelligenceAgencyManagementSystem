@@ -123,26 +123,26 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                Позиція
-            </th>
-            <th>
-                Від
-            </th>
-            <th>
-                До
-            </th>
-            <th>
-                Департамент
-            </th>
+    <tr>
+        <th>
+            Позиція
+        </th>
+        <th>
+            Від
+        </th>
+        <th>
+            До
+        </th>
+        <th>
+            Департамент
+        </th>
             
-            <th></th>
+        <th></th>
             
-        </tr>
+    </tr>
     </thead>
     <tbody>
-@foreach (WorkingInDepartment item in ViewBag.WorkingInDepartment) {
+    @foreach (WorkingInDepartment item in ViewBag.WorkingInDepartment) {
         <tr>
             <td>
                 @Html.DisplayFor(i => item.Role.Title)
@@ -167,9 +167,17 @@
                 <a asp-controller="WorkingInDepartment" asp-action="Details" asp-route-id="@item.Id">Більше</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+@if (ViewBag.WorkingInDepartment.Count == 0)
+{
+    <div class="alert alert-dismissible alert-info">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>У даного співробітника відсутня будь-яка трудова діяльність!</strong> Створіть <a asp-controller="WorkingInDepartment" asp-action="Create" class="alert-link">новий запис тут</a>.
+    </div>
+}
 
 <br/>
 
