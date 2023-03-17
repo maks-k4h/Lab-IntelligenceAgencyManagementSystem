@@ -18,6 +18,11 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             _context = context;
         }
 
+        public Task<IActionResult> Visualization()
+        {
+            return System.Threading.Tasks.Task.FromResult<IActionResult>(View());
+        }
+
         // GET: Operations/5
         public async Task<IActionResult> Index(int? id)
         {

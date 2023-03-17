@@ -6,3 +6,31 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<div class="container">
+    <div id="chart1"></div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+    
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    
+    function drawChart() {
+        $.get('api/Charts/JsonData', function (JsonData) {
+            data = google.visualization.arrayToDataTable(JsonData, false);
+            var option = {
+                title: "Співвідношення департаментів та їхніх операцій",
+                height: 1000,
+                colors: ['#c6c6c6', '#8c8c8c', '#848484', '#7c7c7c', '#5e5e5e', '#444444'],
+                is3D: true,  
+            };
+            chart = new google.visualization.PieChart(document.getElementById('chart1'));
+            chart.draw(data, option);
+        })
+    }
+    
+    </script>
+}

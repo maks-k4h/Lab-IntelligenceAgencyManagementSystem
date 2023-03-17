@@ -1,0 +1,52 @@
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Візуалізація операцій</h2>
+
+<div class="container">
+    <div id="chart1" style="height: 35em"></div>
+</div>
+
+<div class="container">
+    <div id="chart2" style="height: 30em"></div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+    
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    
+    function drawChart() {
+        $.get('/api/Charts/OperationsNumber', function (JsonData) {
+            data = google.visualization.arrayToDataTable(JsonData, false);
+            var option = {
+                title: "Співвідношення департаментів та їхніх операцій",
+                colors: ['#c6c6c6', '#8c8c8c', '#848484', '#7c7c7c', '#5e5e5e', '#444444'],
+                is3D: true,  
+            };
+            chart = new google.visualization.PieChart(document.getElementById('chart1'));
+            chart.draw(data, option);
+        })
+        
+        $.get('/api/Charts/OperationWorkers', function (JsonData) {
+            data = google.visualization.arrayToDataTable(JsonData, false);
+            var option = {
+                title: "Кількість учасників операцій",
+                colors: ['#c6c6c6', '#8c8c8c', '#848484', '#7c7c7c', '#5e5e5e', '#444444'],
+                is3D: true,  
+                legend: {position: 'none'},
+            };
+            chart = new google.visualization.ColumnChart(document.getElementById('chart2'));
+            chart.draw(data, option);
+        })
+                
+    }
+    
+    </script>
+}
