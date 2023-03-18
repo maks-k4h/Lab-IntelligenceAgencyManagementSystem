@@ -4,6 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using NuGet.Protocol;
 
 namespace IntelligenceAgencyManagementSystem.Controllers
 {
@@ -50,6 +54,30 @@ namespace IntelligenceAgencyManagementSystem.Controllers
             }
             
             return new JsonResult(workersNum);
+        }
+        
+        [HttpGet("WorkingInDepartment")]
+        public JsonResult WorkingInDepartment(int id)
+        {
+            List<object> workingInDep = new List<object>();
+            workingInDep.Add(new [] {"Посада", "Департамент", "Від", "До"});
+            foreach (var wid in _context
+                         .WorkingInDepartments
+                         .Where(wid => wid.WorkerId == id)
+                         .Include(wid => wid.Role)
+                         .Include(wid => wid.Department)
+                         .ToList())
+            {
+                workingInDep.Add(new object[]
+                {
+                    wid.Role.Title,
+                    wid.Department.Name,
+                    wid.DateStarted,
+                    wid.DateEnded ?? DateOnly.FromDateTime(DateTime.Now),
+                });
+            }
+            
+            return new JsonResult(workingInDep);
         }
     }
 }

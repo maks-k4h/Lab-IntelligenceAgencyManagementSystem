@@ -121,55 +121,103 @@
 
 <h3>Діяльність</h3>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th>
-            Позиція
-        </th>
-        <th>
-            Від
-        </th>
-        <th>
-            До
-        </th>
-        <th>
-            Департамент
-        </th>
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a class="nav-link active" data-bs-toggle="tab" href="#chart" aria-selected="true" role="tab">Візуалізація</a>
+  </li>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link" data-bs-toggle="tab" href="#table" aria-selected="false" role="tab" tabindex="-1">Таблиця</a>
+  </li>
+</ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active show" id="chart" role="tabpanel">
+        
+        <div class="container">
+            <div id="timeline" style="height: 30em"></div>
+        </div>
+
+        @section Scripts
+        {
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <script>
             
-        <th></th>
+            google.charts.load('current', {'packages': ['timeline']});
+            google.charts.setOnLoadCallback(drawChart);
             
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (WorkingInDepartment item in ViewBag.WorkingInDepartment) {
-        <tr>
-            <td>
-                @Html.DisplayFor(i => item.Role.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(i => item.DateStarted)
-            </td>
-            <td>
-                @if (item.DateEnded == null)
-                {
-                    <span>До теперішнього часу</span>
-                }
-                else
-                {
-                    @Html.DisplayFor(i => item.DateEnded)
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(i => item.Department.Name)
-            </td>
-            <td>
-                <a asp-controller="WorkingInDepartment" asp-action="Details" asp-route-id="@item.Id">Більше</a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+            function drawChart() {
+                $.get('/api/Charts/WorkingInDepartment?id=' + @Model.Id.ToString(), function (JsonData) {
+                    for (let i = 0; i < JsonData.length; ++i) {
+                        JsonData[i][2] = new Date(JsonData[i][2]);
+                        JsonData[i][3] = new Date(JsonData[i][3]);
+                    }
+                    data = google.visualization.arrayToDataTable(JsonData, false);
+                    var option = {
+                        title: "Співвідношення департаментів та їхніх операцій",
+                        colors: ['#c6c6c6', '#8c8c8c', '#848484', '#7c7c7c', '#5e5e5e', '#444444'],
+                        is3D: true,  
+                    };
+                    var container = document.getElementById('timeline')
+                    chart = new google.visualization.Timeline(container);
+                    chart.draw(data, option);
+                })
+            }
+            
+            </script>
+        }
+
+    </div>
+    <div class="tab-pane fade" id="table" role="tabpanel">   
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    Позиція
+                </th>
+                <th>
+                    Від
+                </th>
+                <th>
+                    До
+                </th>
+                <th>
+                    Департамент
+                </th>
+                    
+                <th></th>
+                    
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (WorkingInDepartment item in ViewBag.WorkingInDepartment) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(i => item.Role.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.DateStarted)
+                    </td>
+                    <td>
+                        @if (item.DateEnded == null)
+                        {
+                            <span>До теперішнього часу</span>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(i => item.DateEnded)
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.Department.Name)
+                    </td>
+                    <td>
+                        <a asp-controller="WorkingInDepartment" asp-action="Details" asp-route-id="@item.Id">Більше</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
 
 @if (ViewBag.WorkingInDepartment.Count == 0)
 {
