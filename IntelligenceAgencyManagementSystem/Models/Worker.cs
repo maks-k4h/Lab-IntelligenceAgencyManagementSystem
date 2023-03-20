@@ -23,7 +23,7 @@ public partial class Worker
 
     [NotMapped]
     [Display(Name="Повне імʼя")]
-    public string? FullName => FirstName + " " + SecondName;
+    public string FullName => FirstName + " " + SecondName;
 
     [Display(Name = "Ідентифікатор гендеру")]
     public int? GenderId { get; set; }

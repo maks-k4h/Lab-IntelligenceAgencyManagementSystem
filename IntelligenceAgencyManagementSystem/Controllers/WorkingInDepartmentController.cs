@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IntelligenceAgencyManagementSystem;
+using IntelligenceAgencyManagementSystem.Utils;
 
 namespace IntelligenceAgencyManagementSystem.Controllers
 {
@@ -21,7 +23,11 @@ namespace IntelligenceAgencyManagementSystem.Controllers
         // GET: WorkingInDepartment
         public async Task<IActionResult> Index()
         {
-            var iaDbContext = _context.WorkingInDepartments.Include(w => w.Department).Include(w => w.Role).Include(w => w.Worker);
+            var iaDbContext = _context
+                .WorkingInDepartments
+                .Include(w => w.Department)
+                .Include(w => w.Role)
+                .Include(w => w.Worker);
             return View(await iaDbContext.ToListAsync());
         }
 
@@ -190,6 +196,50 @@ namespace IntelligenceAgencyManagementSystem.Controllers
         private bool WorkingInDepartmentExists(int id)
         {
           return (_context.WorkingInDepartments?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Import(IFormFile excelFile)
+        {
+            try
+            {
+                if (excelFile == null)
+                    throw new NullReferenceException("Оберіть файл");
+
+                using (var stream = new FileStream(excelFile.FileName, FileMode.Create))
+                {
+                    await excelFile.CopyToAsync(stream);
+                    using XLWorkbook workbook = new XLWorkbook(stream);
+                    var importer = new WDImporter(_context);
+                    importer.ImportExcel(workbook);
+                }
+
+                ViewBag.SuccessMessage = "Зміни збережено!";
+            }
+            catch (NullReferenceException e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+            }
+            catch (FileFormatException)
+            {
+                ViewBag.ErrorMessage = "Невірний формат файлу!";
+            }
+            catch (FormatException e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+            }
+            
+            var iaDbContext = _context
+                .WorkingInDepartments
+                .Include(w => w.Department)
+                .Include(w => w.Role)
+                .Include(w => w.Worker);
+            return View("Index", await iaDbContext.ToListAsync());
         }
     }
 }
