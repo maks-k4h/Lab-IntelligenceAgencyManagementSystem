@@ -241,5 +241,21 @@ namespace IntelligenceAgencyManagementSystem.Controllers
                 .Include(w => w.Worker);
             return View("Index", await iaDbContext.ToListAsync());
         }
+
+        public ActionResult Export()
+        {
+            WDExporter exporter = new WDExporter(_context);
+
+            using var workbook = exporter.ExportExcel();
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            stream.Flush();
+            
+            return new FileContentResult(stream.ToArray(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            {
+                FileDownloadName = $"work_records_{DateTime.UtcNow.ToShortDateString()}.xlsx"
+            };
+        }
     }
 }
