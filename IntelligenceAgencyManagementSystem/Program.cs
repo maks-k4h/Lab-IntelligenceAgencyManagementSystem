@@ -1,4 +1,6 @@
 using IntelligenceAgencyManagementSystem;
+using IntelligenceAgencyManagementSystem.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,11 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configure database connection
+// Configure database connections
 builder.Services.AddDbContext<IaDbContext>(option => option.UseMySql(
     builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty,
     ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty)
 ));
+
+builder.Services.AddDbContext<IdentityContext>(option => option.UseMySql(
+    builder.Configuration.GetConnectionString("IdentityConnection") ?? string.Empty,
+    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("IdentityConnection") ?? string.Empty)
+));
+
+builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
 
 var app = builder.Build();
 
@@ -25,9 +34,12 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseAuthentication();
+
 app.UseRouting();
 
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "Departments",
