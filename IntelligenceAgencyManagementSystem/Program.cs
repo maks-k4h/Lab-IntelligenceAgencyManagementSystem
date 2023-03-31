@@ -104,6 +104,11 @@ app.MapControllerRoute(
     new {controller = "TaskStatuses"});
 
 app.MapControllerRoute(
+    name: "Account",
+    pattern: "Account/{action}",
+    new {controller = "Account"});
+
+app.MapControllerRoute(
     name: "default",
     pattern: "/{action}",
     new {controller = "Home", action = "Index"});
