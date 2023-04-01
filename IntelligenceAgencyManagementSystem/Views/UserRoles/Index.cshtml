@@ -1,0 +1,40 @@
+@model IEnumerable<(bool, Microsoft.AspNetCore.Identity.IdentityRole)>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Список ролей</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>Назва ролі</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tuple in Model)
+        {
+            <tr>
+                <td>@tuple.Item2.Name</td>
+                
+                <td class="col-sm-4">
+                    @if (tuple.Item1) // check if the role is used
+                    {
+                        <span class="text-danger">Роль використовується</span>
+                    }
+                    else
+                    {
+                        <button class="btn btn-danger">Видалити</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="UserList">Список користувачів</a>
+</div>

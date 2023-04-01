@@ -23,6 +23,26 @@ builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Iden
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var userManager = services.GetRequiredService<UserManager<User>>();
+        var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var adminConfig = builder.Configuration.GetSection("AdminConfigs");
+        string adminEmail = adminConfig.GetSection("Email").Value ?? "admin@ia.com";
+        string adminPassword = adminConfig.GetSection("Password").Value ?? "root";
+
+        await UserRoleInitializer.InitializeAsync(userManager, rolesManager, adminEmail, adminPassword);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database." + DateTime.Now.ToString());
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -107,6 +127,11 @@ app.MapControllerRoute(
     name: "Account",
     pattern: "Account/{action}",
     new {controller = "Account"});
+
+app.MapControllerRoute(
+    name: "UserRoles",
+    pattern: "UserRoles/{action}",
+    new {controller = "UserRoles"});
 
 app.MapControllerRoute(
     name: "default",

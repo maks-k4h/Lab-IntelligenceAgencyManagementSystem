@@ -33,6 +33,12 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="OperationsManagement" asp-action="Index">Управління операціями</a>
                     </li>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="UserRoles" asp-action="Index">Адміністрування</a>
+                        </li>
+                    }
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Приватність</a>
                     </li>
@@ -63,52 +69,52 @@
 </div>
 
 <style>
-                        #a-leave-account {
-                          overflow: hidden;
-                          position: relative;
-                          display: inline-block;
-                        }
-                        
-                        #a-leave-account::before,
-                        #a-leave-account::after {
-                         content: '';
-                          position: absolute;
-                          width: 100%;
-                          left: 0;
-                        }
-                        #a-leave-account::after {
-                          content: attr(data-replace);
-                          text-align: end;
-                          height: 100%;
-                          top: 0;
-                          transform-origin: 100% 50%;
-                          transform: translate3d(200%, 0, 0);
-                          transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
-                          color: #f44336;
-                        }
-                        
-                        #a-leave-account:hover::before {
-                          transform-origin: 0% 50%;
-                          transform: scaleX(1);
-                        }
-                        #a-leave-account:hover::after {
-                          transform: translate3d(0, 0, 0);
-                        }
-                        
-                        #a-leave-account span {
-                          display: inline-block;
-                          transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
-                        }
-                        
-                        #a-leave-account:hover span {
-                          transform: translate3d(200%, 0, 0);
-                        }
-                        
-                        #markiz{
-                            background-color: black;
-                        }
-                        
-                    </style>
+    #a-leave-account {
+      overflow: hidden;
+      position: relative;
+      display: inline-block;
+    }
+    
+    #a-leave-account::before,
+    #a-leave-account::after {
+     content: '';
+      position: absolute;
+      width: 100%;
+      left: 0;
+    }
+    #a-leave-account::after {
+      content: attr(data-replace);
+      text-align: end;
+      height: 100%;
+      top: 0;
+      transform-origin: 100% 50%;
+      transform: translate3d(200%, 0, 0);
+      transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+      color: #f44336;
+    }
+    
+    #a-leave-account:hover::before {
+      transform-origin: 0% 50%;
+      transform: scaleX(1);
+    }
+    #a-leave-account:hover::after {
+      transform: translate3d(0, 0, 0);
+    }
+    
+    #a-leave-account span {
+      display: inline-block;
+      transition: transform .3s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+    
+    #a-leave-account:hover span {
+      transform: translate3d(200%, 0, 0);
+    }
+    
+    #markiz{
+        background-color: black;
+    }
+    
+</style>
 
 
 
