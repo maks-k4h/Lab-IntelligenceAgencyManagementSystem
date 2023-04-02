@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using IntelligenceAgencyManagementSystem.Models;
 using IntelligenceAgencyManagementSystem.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +43,39 @@ public class UserRolesController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(string userId)
+    public async Task<IActionResult> Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(string roleName)
+    {
+        roleName = roleName.Normalize().ToLower();
+
+        if (Regex.IsMatch(roleName, "[^a-z]"))
+        {
+            ViewBag.ErrorMessage = "Використовуйте тільки латиніські літери";
+            ViewBag.RoleName = roleName;
+            return View("Create");
+        }
+        
+        if (await _roleManager.FindByNameAsync(roleName) == null)
+        {
+            await _roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+        else
+        {
+            ViewBag.ErrorMessage = "Така роль уже існує";
+            ViewBag.RoleName = roleName;
+            return View("Create");
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(string? userId)
     {
         User user = await _userManager.FindByIdAsync(userId);
 
@@ -82,5 +115,16 @@ public class UserRolesController : Controller
         }
 
         return NotFound();
+    }
+
+    public async Task<IActionResult> Delete(string roleName)
+    {
+        var role = await _roleManager.FindByNameAsync(roleName);
+        if (role != null)
+        {
+            await _roleManager.DeleteAsync(role);
+        }
+        
+        return RedirectToAction("Index");
     }
 }

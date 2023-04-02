@@ -27,7 +27,10 @@
                     }
                     else
                     {
-                        <button class="btn btn-danger">Видалити</button>
+                        <form asp-action="Delete">
+                            <input type="hidden" name="roleName" value="@tuple.Item2.Name"/>
+                            <button class="btn btn-danger" type="submit">Видалити</button>
+                        </form>
                     }
                 </td>
             </tr>
@@ -37,4 +40,6 @@
 
 <div>
     <a asp-action="UserList">Список користувачів</a>
+    |
+    <a asp-action="Create">Створити роль</a>
 </div>

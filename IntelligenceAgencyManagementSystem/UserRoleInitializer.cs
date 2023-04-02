@@ -14,9 +14,24 @@ public class UserRoleInitializer
             await roleManager.CreateAsync(new IdentityRole("admin"));
         }
 
-        if (await roleManager.FindByNameAsync("user") == null)
+        if (await roleManager.FindByNameAsync("agent") == null)
         {
-            await roleManager.CreateAsync(new IdentityRole("user"));
+            await roleManager.CreateAsync(new IdentityRole("agent"));
+        }
+        
+        if (await roleManager.FindByNameAsync("hr") == null)
+        {
+            await roleManager.CreateAsync(new IdentityRole("hr"));
+        }
+        
+        if (await roleManager.FindByNameAsync("commander") == null)
+        {
+            await roleManager.CreateAsync(new IdentityRole("commander"));
+        }
+        
+        if (await roleManager.FindByNameAsync("chairman") == null)
+        {
+            await roleManager.CreateAsync(new IdentityRole("chairman"));
         }
 
         if (await userManager.FindByNameAsync(adminEmail) == null)
