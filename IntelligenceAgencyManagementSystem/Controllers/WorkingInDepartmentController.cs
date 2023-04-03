@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IntelligenceAgencyManagementSystem;
 using IntelligenceAgencyManagementSystem.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IntelligenceAgencyManagementSystem.Controllers
 {
+    [Authorize(Roles="admin, chairman, hr")]
     public class WorkingInDepartmentController : Controller
     {
         private readonly IaDbContext _context;

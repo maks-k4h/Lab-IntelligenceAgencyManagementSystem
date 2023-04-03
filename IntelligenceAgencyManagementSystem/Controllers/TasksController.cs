@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IntelligenceAgencyManagementSystem;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace IntelligenceAgencyManagementSystem.Controllers
 {
+    [Authorize(Roles="admin, chairman, commander, agent")]
     public class TasksController : Controller
     {
         private readonly IaDbContext _context;

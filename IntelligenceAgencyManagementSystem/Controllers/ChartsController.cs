@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Extensions;
@@ -11,6 +12,7 @@ using NuGet.Protocol;
 
 namespace IntelligenceAgencyManagementSystem.Controllers
 {
+    [Authorize(Roles="admin, chairman, commander, hr")]
     [Route("api/[controller]")]
     [ApiController]
     public class ChartsController : ControllerBase

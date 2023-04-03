@@ -27,12 +27,21 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Departments" asp-action="Index">Департаменти</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="HumanResources" asp-action="Index">Кадри</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="OperationsManagement" asp-action="Index">Управління операціями</a>
-                    </li>
+                    
+                    @if (User.IsInRole("hr") || User.IsInRole("chairman") || User.IsInRole("admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="HumanResources" asp-action="Index">Кадри</a>
+                        </li>
+                    }
+                    
+                    @if (User.IsInRole("agent") || User.IsInRole("commander") || User.IsInRole("chairman") || User.IsInRole("admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="OperationsManagement" asp-action="Index">Операції</a>
+                        </li>
+                    }
+                    
                     @if (User.IsInRole("admin"))
                     {
                         <li class="nav-item">

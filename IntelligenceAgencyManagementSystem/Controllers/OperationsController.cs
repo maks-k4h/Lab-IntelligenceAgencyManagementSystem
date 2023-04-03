@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IntelligenceAgencyManagementSystem;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IntelligenceAgencyManagementSystem.Controllers
 {
+    [Authorize(Roles="admin, chairman, commander, agent")]
     public class OperationsController : Controller
     {
         private readonly IaDbContext _context;
