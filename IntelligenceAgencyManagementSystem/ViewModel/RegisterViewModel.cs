@@ -1,25 +1,27 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace IntelligenceAgencyManagementSystem.ViewModel;
 
 public class RegisterViewModel
 {
-    [Microsoft.Build.Framework.Required]
     [Display(Name = "Email")]
-    [DataType(DataType.EmailAddress)]
+    [DataType(DataType.EmailAddress, ErrorMessage = "Невірний формат")]
+    [Required(ErrorMessage = "Вкажіть email")]
     public string Email { get; set; }
-    
-    [Required]
+
     [Display(Name = "Рік народження")]
+    [Required(ErrorMessage = "Необхідно вказати рік народження")]
+    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
     public int Year { get; set; }
     
-    [Required]
     [Display(Name = "Пароль")]
+    [Required(ErrorMessage = "Вкажіть пароль")]
     public string Password { get; set; }
     
-    [Required]
-    [Compare("Password", ErrorMessage = "Паролі не співпадають")]
     [Display(Name = "Підтвердження паролю")]
     [DataType(DataType.Password)]
+    [Required(ErrorMessage = "Пароль необхідно підтвердити")]
+    [Compare("Password", ErrorMessage = "Паролі не співпадають")]
     public string PasswordConfirm { get; set; }
 }
