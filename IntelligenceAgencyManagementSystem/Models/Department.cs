@@ -19,11 +19,11 @@ public partial class Department
 
     [Display(Name="Дата створення")]
     [Required(ErrorMessage = "Необхідно вказати дату створення департаменту")]
-    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
+    [RegularExpression(Constants.DmyDatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly DateCreated { get; set; }
 
     [Display(Name="Дата закриття")]
-    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
+    [RegularExpression(Constants.DmyDatePattern, ErrorMessage = "Введіть коректну дату")]
     public DateOnly? DateClosed { get; set; }
 
     [Display(Name="Операції")]

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace IntelligenceAgencyManagementSystem.Models
 {
-    [Authorize(Roles="admin, chairman, commander")]
+    [Authorize(Roles="admin, chairman, commander, agent")]
     public class OperationsManagementController : Controller
     {
         private readonly IaDbContext _context;
@@ -19,7 +19,7 @@ namespace IntelligenceAgencyManagementSystem.Models
         {
             _context = context;
         }
-
+        
         // GET: OperationsManagement/5
         public async Task<IActionResult> Index(int? id)
         {

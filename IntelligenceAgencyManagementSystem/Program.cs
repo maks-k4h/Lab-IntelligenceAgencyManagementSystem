@@ -31,8 +31,9 @@ using (var scope = app.Services.CreateScope())
         var userManager = services.GetRequiredService<UserManager<User>>();
         var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         var adminConfig = builder.Configuration.GetSection("AdminConfigs");
-        string adminEmail = adminConfig.GetSection("Email").Value ?? "admin@ia.com";
-        string adminPassword = adminConfig.GetSection("Password").Value ?? "root";
+        
+        string adminEmail = adminConfig.GetSection("Email").Value ?? Constants.DefaultAdminEmail;
+        string adminPassword = adminConfig.GetSection("Password").Value ?? Constants.DefaultAdminPassword;
 
         await UserRoleInitializer.InitializeAsync(userManager, rolesManager, adminEmail, adminPassword);
     }

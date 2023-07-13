@@ -12,7 +12,7 @@ public class WDImporter
     public const string FromDateHeader      = "від";
     public const string ToDateHeader        = "до";
     
-    private const int MaxColNum             = 100;
+    private const int MaxColNum             = 20;
     private readonly IaDbContext _context;
 
     private const int DepartmentLevenshteinD    = 4;

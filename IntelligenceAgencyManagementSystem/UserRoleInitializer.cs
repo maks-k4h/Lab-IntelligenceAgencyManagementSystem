@@ -8,12 +8,6 @@ public class UserRoleInitializer
 {
     public static async Task<Task> InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, string adminEmail, string password)
     {
-
-        if (await roleManager.FindByNameAsync("admin") == null)
-        {
-            await roleManager.CreateAsync(new IdentityRole("admin"));
-        }
-
         if (await roleManager.FindByNameAsync("agent") == null)
         {
             await roleManager.CreateAsync(new IdentityRole("agent"));
@@ -32,6 +26,11 @@ public class UserRoleInitializer
         if (await roleManager.FindByNameAsync("chairman") == null)
         {
             await roleManager.CreateAsync(new IdentityRole("chairman"));
+        }
+        
+        if (await roleManager.FindByNameAsync("admin") == null)
+        {
+            await roleManager.CreateAsync(new IdentityRole("admin"));
         }
 
         if (await userManager.FindByNameAsync(adminEmail) == null)

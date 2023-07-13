@@ -12,7 +12,7 @@ public class RegisterViewModel
 
     [Display(Name = "Рік народження")]
     [Required(ErrorMessage = "Необхідно вказати рік народження")]
-    [RegularExpression(Constants.DatePattern, ErrorMessage = "Введіть коректну дату")]
+    [RegularExpression(Constants.YearPattern, ErrorMessage = "Введіть коректну дату")]
     public int Year { get; set; }
     
     [Display(Name = "Пароль")]
